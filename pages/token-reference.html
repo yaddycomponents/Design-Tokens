@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Token Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f2;--surface:#fff;--surface-2:#f2f0ed;
+  --ink:#1a1814;--ink-2:#5a5550;--ink-3:#9a938c;
+  --rule:#e2ddd8;--accent:#531dab;
+  --nav-w:200px;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.5;display:flex;}
+
+/* ── Sidebar ── */
+.sidenav{width:var(--nav-w);flex-shrink:0;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;background:#16131f;display:flex;flex-direction:column;z-index:100;}
+.sidenav-logo{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,.07);}
+.logo-title{font-family:var(--mono);font-size:13px;font-weight:600;color:#e2d9f3;letter-spacing:.04em;}
+.logo-sub{font-family:var(--mono);font-size:9px;color:#6c5fa0;margin-top:3px;letter-spacing:.1em;}
+.nav-group{padding:12px 0 4px;}
+.nav-group-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#6c5fa0;padding:0 16px;margin-bottom:4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 16px;cursor:pointer;text-decoration:none;border-left:2px solid transparent;transition:background .12s;}
+.nav-item:hover{background:rgba(255,255,255,.04);}
+.nav-item.active{background:rgba(146,84,222,.12);border-left-color:#9254de;}
+.nav-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.nav-label{font-family:var(--mono);font-size:10px;color:#a898d0;letter-spacing:.03em;}
+.nav-item.active .nav-label{color:#e2d9f3;}
+.nav-count{font-family:var(--mono);font-size:9px;color:#6c5fa0;margin-left:auto;}
+.sidenav-foot{margin-top:auto;padding:12px 16px;border-top:1px solid rgba(255,255,255,.06);}
+.antd-pill{font-family:var(--mono);font-size:9px;color:#d46b08;background:rgba(212,107,8,.1);border:1px solid rgba(212,107,8,.2);padding:3px 8px;border-radius:3px;text-align:center;letter-spacing:.06em;}
+
+/* ── Main ── */
+.main{margin-left:var(--nav-w);flex:1;min-width:0;}
+
+/* ── Page header ── */
+.page-hero{padding:48px 48px 36px;border-bottom:1px solid var(--rule);background:var(--surface);}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;}
+.hero-title{font-size:32px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-bottom:6px;}
+.hero-title span{color:var(--accent);}
+.hero-sub{font-size:13px;color:var(--ink-2);margin-bottom:20px;}
+.hero-stats{display:flex;gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;width:fit-content;}
+.hs{padding:10px 20px;border-right:1px solid var(--rule);display:flex;flex-direction:column;gap:1px;}
+.hs:last-child{border-right:none;}
+.hs-val{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--ink);}
+.hs-lbl{font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase;}
+
+/* ── Chapter ── */
+.chapter{padding:48px 48px 56px;border-bottom:1px solid var(--rule);scroll-margin-top:0;}
+.chapter:last-child{border-bottom:none;}
+.chapter-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid var(--ink);}
+.ch-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ch-meta{flex:1;}
+.ch-num{font-family:var(--mono);font-size:9px;color:var(--ink-3);letter-spacing:.14em;text-transform:uppercase;}
+.ch-title{font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--ink);margin-top:1px;}
+.ch-right{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.pill{font-family:var(--mono);font-size:9px;padding:3px 9px;border-radius:3px;border:1px solid;letter-spacing:.05em;}
+.pill-count{color:var(--ink-3);border-color:var(--rule);background:var(--surface-2);}
+.pill-antd{color:#d46b08;border-color:#ffd591;background:#fff7e6;}
+
+/* ── Token table ── */
+.token-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden;font-size:12px;}
+.token-table + .token-table{margin-top:12px;}
+thead tr{background:var(--surface-2);}
+.token-table th{text-align:left;padding:9px 14px;font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule);}
+.token-table th.w-preview{width:140px;}
+.token-table th.w-css{width:200px;}
+.token-table th.w-token{width:220px;}
+.token-table th.w-value{width:280px;}
+.token-table th.antd-th{color:#d46b08!important;background:#fff7e6!important;border-bottom:1px solid #ffd591!important;width:180px;}
+.token-table td{padding:9px 14px;border-bottom:1px solid var(--surface-2);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#faf9f7;}
+tr.base-row td{background:#faf7ff;}
+tr.base-row:hover td{background:#f5f0ff;}
+tr.group-header td{background:var(--surface-2);padding:6px 14px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--rule);font-weight:600;}
+
+/* Cell types */
+.css-var{font-family:var(--mono);font-size:11px;color:#531dab;font-weight:500;}
+.token-name{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:500;}
+.token-name.gray{color:var(--ink-2);}
+.token-value{font-family:var(--mono);font-size:11px;color:var(--ink-2);}
+.antd-ref{font-family:var(--mono);font-size:10px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:2px 7px;border-radius:3px;display:inline-block;white-space:nowrap;}
+.antd-ref.na{color:var(--ink-3);background:var(--surface-2);border-color:var(--rule);font-style:italic;}
+.base-star{font-family:var(--mono);font-size:9px;background:var(--accent);color:#fff;padding:1px 5px;border-radius:2px;margin-left:5px;}
+.layer-badge{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;border:1px solid;white-space:nowrap;}
+.lb-prim{color:#6d28d9;border-color:#ddd6fe;background:#f5f3ff;}
+.lb-sem{color:#0369a1;border-color:#bae6fd;background:#f0f9ff;}
+.lb-alias{color:#047857;border-color:#a7f3d0;background:#ecfdf5;}
+
+/* ── Previews ── */
+.swatch{width:52px;height:26px;border-radius:5px;border:1px solid rgba(0,0,0,.08);display:inline-block;flex-shrink:0;}
+.swatch.bordered{border:1px solid #ddd;}
+.radius-preview{height:28px;width:52px;background:var(--accent);opacity:.7;display:inline-block;}
+.radius-preview.base{opacity:1;}
+.gradient-preview{height:26px;width:80px;border-radius:5px;display:inline-block;border:1px solid rgba(0,0,0,.06);}
+.shadow-preview{width:52px;height:28px;border-radius:6px;background:#fff;display:inline-block;}
+.height-bar{background:var(--accent);border-radius:3px;display:inline-block;width:40px;opacity:.7;}
+.height-bar.base{opacity:1;outline:2px solid var(--accent);outline-offset:2px;}
+.weight-sample{color:var(--ink);font-size:15px;font-family:'Inter',sans-serif;}
+.size-sample{color:var(--ink);font-family:'Inter',sans-serif;line-height:1.2;}
+.family-sample{color:var(--ink);font-size:18px;line-height:1.2;}
+
+/* ── Group sub-label ── */
+.sub-table-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:20px 0 8px;display:flex;align-items:center;gap:8px;}
+.sub-table-label::after{content:'';flex:1;height:1px;background:var(--rule);}
+.sub-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+/* ── ConfigProvider block ── */
+.config-chapter{padding:48px;background:#16131f;}
+.config-label{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#9370db;margin-bottom:16px;}
+.config-code{font-family:var(--mono);font-size:12px;color:#e2d9f3;line-height:1.8;white-space:pre;overflow-x:auto;}
+.cc{color:#6c5fa0;}.ck{color:#c792ea;}.cv{color:#f7c67f;}.cs{color:#a8ff78;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chapter{animation:fadeIn .4s ease both;}
+</style>
+<link rel="stylesheet" href="../shared-theme.css">
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<nav class="sidenav">
+  <div class="sidenav-logo">
+    <div class="logo-title">Token Reference</div>
+    <div class="logo-sub">v1.0.0 · AntD v5 · 4px Grid</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Foundations</div>
+    <a class="nav-item active" href="#color"><div class="nav-dot" style="background:#531dab;"></div><span class="nav-label">Color</span><span class="nav-count">106</span></a>
+    <a class="nav-item" href="#spacing"><div class="nav-dot" style="background:#1677ff;"></div><span class="nav-label">Spacing</span><span class="nav-count">18</span></a>
+    <a class="nav-item" href="#typography"><div class="nav-dot" style="background:#d46b08;"></div><span class="nav-label">Typography</span><span class="nav-count">17</span></a>
+    <a class="nav-item" href="#radius"><div class="nav-dot" style="background:#237804;"></div><span class="nav-label">Border Radius</span><span class="nav-count">5</span></a>
+    <a class="nav-item" href="#shadow"><div class="nav-dot" style="background:#595959;"></div><span class="nav-label">Shadow</span><span class="nav-count">5</span></a>
+    <a class="nav-item" href="#ai"><div class="nav-dot" style="background:linear-gradient(90deg,#FFF0F6,#F0F5FF);background-size:cover;"></div><span class="nav-label">AI Gradients</span><span class="nav-count">4</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Config</div>
+    <a class="nav-item" href="#config"><div class="nav-dot" style="background:#9370db;"></div><span class="nav-label">ConfigProvider</span></a>
+  </div>
+  <div class="sidenav-foot">
+    <div class="antd-pill">↔ AntD v5 Aligned</div>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+  <!-- Hero -->
+  <div class="page-hero">
+    <div class="hero-eyebrow">Design System · Complete Token Reference</div>
+    <div class="hero-title">All <span>Design Tokens</span></div>
+    <div class="hero-sub">CSS variable · Token name · Value · AntD v5 reference · Preview — all in one place</div>
+    <div class="hero-stats">
+      <div class="hs"><span class="hs-val">162</span><span class="hs-lbl">Total Tokens</span></div>
+      <div class="hs"><span class="hs-val">7</span><span class="hs-lbl">Categories</span></div>
+      <div class="hs"><span class="hs-val">4px</span><span class="hs-lbl">Grid Unit</span></div>
+      <div class="hs"><span class="hs-val">AntD v5</span><span class="hs-lbl">Aligned</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════ 01 COLOR ══════════ -->
+  <section class="chapter" id="color">
+    <div class="chapter-header">
+      <div class="ch-icon" style="background:#f9f0ff;">🎨</div>
+      <div class="ch-meta"><div class="ch-num">01 · Color</div><div class="ch-title">Color Tokens</div></div>
+      <div class="ch-right">
+        <span class="pill pill-count">60 Primitive · 28 Semantic · 18 Alias</span>
+        <span class="pill pill-antd">colorPrimary · colorSuccess · colorError · colorInfo</span>
+      </div>
+    </div>
+
+    <!-- Primitive -->
+    <div class="sub-table-label"><span class="sub-dot" style="background:#6d28d9;"></span>Primitive Palette — 60 tokens · Raw hex values</div>
+    <table class="token-table">
+      <thead><tr><th class="w-preview">Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th class="w-value">Value</th><th>Scale · Step</th><th>Layer</th></tr></thead>
+      <tbody>
+        <tr class="group-header"><td colspan="6">Purple Scale</td></tr>
+        <tr><td><span class="swatch" style="background:#f9f0ff;"></span></td><td><span class="css-var">--color-purple-1</span></td><td><span class="token-name">purple-1</span></td><td><span class="token-value">#f9f0ff</span></td><td><span class="token-value">Lightest tint</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#efdbff;"></span></td><td><span class="css-var">--color-purple-2</span></td><td><span class="token-name">purple-2</span></td><td><span class="token-value">#efdbff</span></td><td><span class="token-value">Hover tint</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#d3adf7;"></span></td><td><span class="css-var">--color-purple-3</span></td><td><span class="token-name">purple-3</span></td><td><span class="token-value">#d3adf7</span></td><td><span class="token-value">Light</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#b37feb;"></span></td><td><span class="css-var">--color-purple-4</span></td><td><span class="token-name">purple-4</span></td><td><span class="token-value">#b37feb</span></td><td><span class="token-value">Medium-light</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#9254de;"></span></td><td><span class="css-var">--color-purple-5</span></td><td><span class="token-name">purple-5</span></td><td><span class="token-value">#9254de</span></td><td><span class="token-value">Border/Focus</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#722ed1;"></span></td><td><span class="css-var">--color-purple-6</span></td><td><span class="token-name">purple-6</span></td><td><span class="token-value">#722ed1</span></td><td><span class="token-value">Hover state</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="base-row"><td><span class="swatch" style="background:#531dab;"></span></td><td><span class="css-var">--color-purple-7</span></td><td><span class="token-name">purple-7 <span class="base-star">SEED</span></span></td><td><span class="token-value">#531dab</span></td><td><span class="token-value">Brand primary</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#391085;"></span></td><td><span class="css-var">--color-purple-8</span></td><td><span class="token-name">purple-8</span></td><td><span class="token-value">#391085</span></td><td><span class="token-value">Active state</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#22075e;"></span></td><td><span class="css-var">--color-purple-9</span></td><td><span class="token-name">purple-9</span></td><td><span class="token-value">#22075e</span></td><td><span class="token-value">Deep</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#120338;"></span></td><td><span class="css-var">--color-purple-10</span></td><td><span class="token-name">purple-10</span></td><td><span class="token-value">#120338</span></td><td><span class="token-value">Darkest</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="group-header"><td colspan="6">Green Scale (Success)</td></tr>
+        <tr><td><span class="swatch" style="background:#f6ffed;"></span></td><td><span class="css-var">--color-green-1</span></td><td><span class="token-name">green-1</span></td><td><span class="token-value">#f6ffed</span></td><td><span class="token-value">BG tint</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#d9f7be;"></span></td><td><span class="css-var">--color-green-2</span></td><td><span class="token-name">green-2</span></td><td><span class="token-value">#d9f7be</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#b7eb8f;"></span></td><td><span class="css-var">--color-green-3</span></td><td><span class="token-name">green-3</span></td><td><span class="token-value">#b7eb8f</span></td><td><span class="token-value">Border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#95de64;"></span></td><td><span class="css-var">--color-green-4</span></td><td><span class="token-name">green-4</span></td><td><span class="token-value">#95de64</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#73d13d;"></span></td><td><span class="css-var">--color-green-5</span></td><td><span class="token-name">green-5</span></td><td><span class="token-value">#73d13d</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="base-row"><td><span class="swatch" style="background:#52c41a;"></span></td><td><span class="css-var">--color-green-6</span></td><td><span class="token-name">green-6 <span class="base-star">SEED</span></span></td><td><span class="token-value">#52c41a</span></td><td><span class="token-value">Success default</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#389e0d;"></span></td><td><span class="css-var">--color-green-7</span></td><td><span class="token-name">green-7</span></td><td><span class="token-value">#389e0d</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#237804;"></span></td><td><span class="css-var">--color-green-8</span></td><td><span class="token-name">green-8</span></td><td><span class="token-value">#237804</span></td><td><span class="token-value">Text on light</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#135200;"></span></td><td><span class="css-var">--color-green-9</span></td><td><span class="token-name">green-9</span></td><td><span class="token-value">#135200</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#092b00;"></span></td><td><span class="css-var">--color-green-10</span></td><td><span class="token-name">green-10</span></td><td><span class="token-value">#092b00</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="group-header"><td colspan="6">Red Scale (Error)</td></tr>
+        <tr><td><span class="swatch" style="background:#fff1f0;"></span></td><td><span class="css-var">--color-red-1</span></td><td><span class="token-name">red-1</span></td><td><span class="token-value">#fff1f0</span></td><td><span class="token-value">BG tint</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffccc7;"></span></td><td><span class="css-var">--color-red-2</span></td><td><span class="token-name">red-2</span></td><td><span class="token-value">#ffccc7</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffa39e;"></span></td><td><span class="css-var">--color-red-3</span></td><td><span class="token-name">red-3</span></td><td><span class="token-value">#ffa39e</span></td><td><span class="token-value">Border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ff7875;"></span></td><td><span class="css-var">--color-red-4</span></td><td><span class="token-name">red-4</span></td><td><span class="token-value">#ff7875</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="base-row"><td><span class="swatch" style="background:#ff4d4f;"></span></td><td><span class="css-var">--color-red-5</span></td><td><span class="token-name">red-5 <span class="base-star">SEED</span></span></td><td><span class="token-value">#ff4d4f</span></td><td><span class="token-value">Error default</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f5222d;"></span></td><td><span class="css-var">--color-red-6</span></td><td><span class="token-name">red-6</span></td><td><span class="token-value">#f5222d</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#cf1322;"></span></td><td><span class="css-var">--color-red-7</span></td><td><span class="token-name">red-7</span></td><td><span class="token-value">#cf1322</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#a8071a;"></span></td><td><span class="css-var">--color-red-8</span></td><td><span class="token-name">red-8</span></td><td><span class="token-value">#a8071a</span></td><td><span class="token-value">Text on light</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#820014;"></span></td><td><span class="css-var">--color-red-9</span></td><td><span class="token-name">red-9</span></td><td><span class="token-value">#820014</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#5c0011;"></span></td><td><span class="css-var">--color-red-10</span></td><td><span class="token-name">red-10</span></td><td><span class="token-value">#5c0011</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="group-header"><td colspan="6">Orange Scale (Warning)</td></tr>
+        <tr><td><span class="swatch" style="background:#fff7e6;"></span></td><td><span class="css-var">--color-orange-1</span></td><td><span class="token-name">orange-1</span></td><td><span class="token-value">#fff7e6</span></td><td><span class="token-value">BG tint</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffe7ba;"></span></td><td><span class="css-var">--color-orange-2</span></td><td><span class="token-name">orange-2</span></td><td><span class="token-value">#ffe7ba</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffd591;"></span></td><td><span class="css-var">--color-orange-3</span></td><td><span class="token-name">orange-3</span></td><td><span class="token-value">#ffd591</span></td><td><span class="token-value">Border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffc069;"></span></td><td><span class="css-var">--color-orange-4</span></td><td><span class="token-name">orange-4</span></td><td><span class="token-value">#ffc069</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="base-row"><td><span class="swatch" style="background:#ffa940;"></span></td><td><span class="css-var">--color-orange-5</span></td><td><span class="token-name">orange-5 <span class="base-star">SEED</span></span></td><td><span class="token-value">#ffa940</span></td><td><span class="token-value">Warning default</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#fa8c16;"></span></td><td><span class="css-var">--color-orange-6</span></td><td><span class="token-name">orange-6</span></td><td><span class="token-value">#fa8c16</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#d46b08;"></span></td><td><span class="css-var">--color-orange-7</span></td><td><span class="token-name">orange-7</span></td><td><span class="token-value">#d46b08</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ad4e00;"></span></td><td><span class="css-var">--color-orange-8</span></td><td><span class="token-name">orange-8</span></td><td><span class="token-value">#ad4e00</span></td><td><span class="token-value">Text on light</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#873800;"></span></td><td><span class="css-var">--color-orange-9</span></td><td><span class="token-name">orange-9</span></td><td><span class="token-value">#873800</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#612500;"></span></td><td><span class="css-var">--color-orange-10</span></td><td><span class="token-name">orange-10</span></td><td><span class="token-value">#612500</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="group-header"><td colspan="6">Blue Scale (Info)</td></tr>
+        <tr><td><span class="swatch" style="background:#e6f4ff;"></span></td><td><span class="css-var">--color-blue-1</span></td><td><span class="token-name">blue-1</span></td><td><span class="token-value">#e6f4ff</span></td><td><span class="token-value">BG tint</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#bae0ff;"></span></td><td><span class="css-var">--color-blue-2</span></td><td><span class="token-name">blue-2</span></td><td><span class="token-value">#bae0ff</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#91caff;"></span></td><td><span class="css-var">--color-blue-3</span></td><td><span class="token-name">blue-3</span></td><td><span class="token-value">#91caff</span></td><td><span class="token-value">Border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#69b1ff;"></span></td><td><span class="css-var">--color-blue-4</span></td><td><span class="token-name">blue-4</span></td><td><span class="token-value">#69b1ff</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#4096ff;"></span></td><td><span class="css-var">--color-blue-5</span></td><td><span class="token-name">blue-5</span></td><td><span class="token-value">#4096ff</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="base-row"><td><span class="swatch" style="background:#1677ff;"></span></td><td><span class="css-var">--color-blue-6</span></td><td><span class="token-name">blue-6 <span class="base-star">SEED</span></span></td><td><span class="token-value">#1677ff</span></td><td><span class="token-value">Info default</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#0958d9;"></span></td><td><span class="css-var">--color-blue-7</span></td><td><span class="token-name">blue-7</span></td><td><span class="token-value">#0958d9</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#003eb3;"></span></td><td><span class="css-var">--color-blue-8</span></td><td><span class="token-name">blue-8</span></td><td><span class="token-value">#003eb3</span></td><td><span class="token-value">Text on light</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#002c8c;"></span></td><td><span class="css-var">--color-blue-9</span></td><td><span class="token-name">blue-9</span></td><td><span class="token-value">#002c8c</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#001d66;"></span></td><td><span class="css-var">--color-blue-10</span></td><td><span class="token-name">blue-10</span></td><td><span class="token-value">#001d66</span></td><td></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr class="group-header"><td colspan="6">Gray Scale (Neutral)</td></tr>
+        <tr><td><span class="swatch bordered" style="background:#ffffff;"></span></td><td><span class="css-var">--color-gray-1</span></td><td><span class="token-name">gray-1</span></td><td><span class="token-value">#ffffff</span></td><td><span class="token-value">White / Page bg</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#fafafa;"></span></td><td><span class="css-var">--color-gray-2</span></td><td><span class="token-name">gray-2</span></td><td><span class="token-value">#fafafa</span></td><td><span class="token-value">Layout bg</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f5f5f5;"></span></td><td><span class="css-var">--color-gray-3</span></td><td><span class="token-name">gray-3</span></td><td><span class="token-value">#f5f5f5</span></td><td><span class="token-value">Disabled bg</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f0f0f0;"></span></td><td><span class="css-var">--color-gray-4</span></td><td><span class="token-name">gray-4</span></td><td><span class="token-value">#f0f0f0</span></td><td><span class="token-value">Subtle border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#d9d9d9;"></span></td><td><span class="css-var">--color-gray-5</span></td><td><span class="token-name">gray-5</span></td><td><span class="token-value">#d9d9d9</span></td><td><span class="token-value">Default border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#bfbfbf;"></span></td><td><span class="css-var">--color-gray-6</span></td><td><span class="token-name">gray-6</span></td><td><span class="token-value">#bfbfbf</span></td><td><span class="token-value">Tertiary text</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#737373;"></span></td><td><span class="css-var">--color-gray-7</span></td><td><span class="token-name">gray-7</span></td><td><span class="token-value">#737373</span></td><td><span class="token-value">Secondary text</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#4d4d4d;"></span></td><td><span class="css-var">--color-gray-8</span></td><td><span class="token-name">gray-8</span></td><td><span class="token-value">#4d4d4d</span></td><td><span class="token-value">Strong border</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#262626;"></span></td><td><span class="css-var">--color-gray-9</span></td><td><span class="token-name">gray-9</span></td><td><span class="token-value">#262626</span></td><td><span class="token-value">Body text</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+        <tr><td><span class="swatch" style="background:#000000;"></span></td><td><span class="css-var">--color-gray-10</span></td><td><span class="token-name">gray-10</span></td><td><span class="token-value">#000000</span></td><td><span class="token-value">Black / Overlay</span></td><td><span class="layer-badge lb-prim">Primitive</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- Semantic -->
+    <div class="sub-table-label" style="margin-top:28px;"><span class="sub-dot" style="background:#0369a1;"></span>Semantic Tokens — 28 tokens · Role-based</div>
+    <table class="token-table">
+      <thead><tr><th class="w-preview">Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th class="w-value">Value</th><th class="antd-th">AntD v5</th><th>Used For</th><th>Layer</th></tr></thead>
+      <tbody>
+        <tr class="group-header"><td colspan="7">Primary (purple-7 base)</td></tr>
+        <tr><td><span class="swatch" style="background:#531dab;"></span></td><td><span class="css-var">--color-primary-text</span></td><td><span class="token-name">color.primary.text</span></td><td><span class="token-value">#531dab</span></td><td><span class="antd-ref">colorPrimary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Brand text, links</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f9f0ff;"></span></td><td><span class="css-var">--color-primary-bg</span></td><td><span class="token-name">color.primary.bg</span></td><td><span class="token-value">#f9f0ff</span></td><td><span class="antd-ref">colorPrimaryBg</span></td><td><span style="font-size:11px;color:var(--ink-3);">Selected/highlighted areas</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#efdbff;"></span></td><td><span class="css-var">--color-primary-bg-hover</span></td><td><span class="token-name">color.primary.bg-hover</span></td><td><span class="token-value">#efdbff</span></td><td><span class="antd-ref">colorPrimaryBgHover</span></td><td><span style="font-size:11px;color:var(--ink-3);">Hover on primary bg</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#9254de;"></span></td><td><span class="css-var">--color-primary-border</span></td><td><span class="token-name">color.primary.border</span></td><td><span class="token-value">#9254de</span></td><td><span class="antd-ref">colorPrimaryBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Focus ring, outlined buttons</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#722ed1;"></span></td><td><span class="css-var">--color-primary-hover</span></td><td><span class="token-name">color.primary.hover</span></td><td><span class="token-value">#722ed1</span></td><td><span class="antd-ref">colorPrimaryHover</span></td><td><span style="font-size:11px;color:var(--ink-3);">Button hover</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#391085;"></span></td><td><span class="css-var">--color-primary-active</span></td><td><span class="token-name">color.primary.active</span></td><td><span class="token-value">#391085</span></td><td><span class="antd-ref">colorPrimaryActive</span></td><td><span style="font-size:11px;color:var(--ink-3);">Button pressed</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr class="group-header" style="background:rgba(82,196,26,.08);"><td colspan="7"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#52c41a;display:inline-block;"></span>Success</span></td></tr>
+        <tr><td><span class="swatch" style="background:#52c41a;"></span></td><td><span class="css-var">--color-success-default</span></td><td><span class="token-name">color.success.default</span></td><td><span class="token-value">#52c41a</span></td><td><span class="antd-ref">colorSuccess</span></td><td><span style="font-size:11px;color:var(--ink-3);">Icons, indicators</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#237804;"></span></td><td><span class="css-var">--color-success-text</span></td><td><span class="token-name">color.success.text</span></td><td><span class="token-value">#237804</span></td><td><span class="antd-ref">colorSuccessText</span></td><td><span style="font-size:11px;color:var(--ink-3);">Success message text</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f6ffed;"></span></td><td><span class="css-var">--color-success-bg</span></td><td><span class="token-name">color.success.bg</span></td><td><span class="token-value">#f6ffed</span></td><td><span class="antd-ref">colorSuccessBg</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert background</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#b7eb8f;"></span></td><td><span class="css-var">--color-success-border</span></td><td><span class="token-name">color.success.border</span></td><td><span class="token-value">#b7eb8f</span></td><td><span class="antd-ref">colorSuccessBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert border</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr class="group-header" style="background:rgba(255,169,64,.08);"><td colspan="7"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#ffa940;display:inline-block;"></span>Warning</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffa940;"></span></td><td><span class="css-var">--color-warning-default</span></td><td><span class="token-name">color.warning.default</span></td><td><span class="token-value">#ffa940</span></td><td><span class="antd-ref">colorWarning</span></td><td><span style="font-size:11px;color:var(--ink-3);">Icons, indicators</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ad4e00;"></span></td><td><span class="css-var">--color-warning-text</span></td><td><span class="token-name">color.warning.text</span></td><td><span class="token-value">#ad4e00</span></td><td><span class="antd-ref">colorWarningText</span></td><td><span style="font-size:11px;color:var(--ink-3);">Warning message text</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#fff7e6;"></span></td><td><span class="css-var">--color-warning-bg</span></td><td><span class="token-name">color.warning.bg</span></td><td><span class="token-value">#fff7e6</span></td><td><span class="antd-ref">colorWarningBg</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert background</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffd591;"></span></td><td><span class="css-var">--color-warning-border</span></td><td><span class="token-name">color.warning.border</span></td><td><span class="token-value">#ffd591</span></td><td><span class="antd-ref">colorWarningBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert border</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr class="group-header" style="background:rgba(255,77,79,.08);"><td colspan="7"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#ff4d4f;display:inline-block;"></span>Error</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ff4d4f;"></span></td><td><span class="css-var">--color-error-default</span></td><td><span class="token-name">color.error.default</span></td><td><span class="token-value">#ff4d4f</span></td><td><span class="antd-ref">colorError</span></td><td><span style="font-size:11px;color:var(--ink-3);">Icons, destructive actions</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#a8071a;"></span></td><td><span class="css-var">--color-error-text</span></td><td><span class="token-name">color.error.text</span></td><td><span class="token-value">#a8071a</span></td><td><span class="antd-ref">colorErrorText</span></td><td><span style="font-size:11px;color:var(--ink-3);">Error message text</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#fff1f0;"></span></td><td><span class="css-var">--color-error-bg</span></td><td><span class="token-name">color.error.bg</span></td><td><span class="token-value">#fff1f0</span></td><td><span class="antd-ref">colorErrorBg</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert background</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#ffa39e;"></span></td><td><span class="css-var">--color-error-border</span></td><td><span class="token-name">color.error.border</span></td><td><span class="token-value">#ffa39e</span></td><td><span class="antd-ref">colorErrorBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert border</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr class="group-header" style="background:rgba(22,119,255,.08);"><td colspan="7"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#1677ff;display:inline-block;"></span>Info</span></td></tr>
+        <tr><td><span class="swatch" style="background:#1677ff;"></span></td><td><span class="css-var">--color-info-default</span></td><td><span class="token-name">color.info.default</span></td><td><span class="token-value">#1677ff</span></td><td><span class="antd-ref">colorInfo</span></td><td><span style="font-size:11px;color:var(--ink-3);">Info icons, indicators</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#003eb3;"></span></td><td><span class="css-var">--color-info-text</span></td><td><span class="token-name">color.info.text</span></td><td><span class="token-value">#003eb3</span></td><td><span class="antd-ref">colorInfoText</span></td><td><span style="font-size:11px;color:var(--ink-3);">Info message text</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#e6f4ff;"></span></td><td><span class="css-var">--color-info-bg</span></td><td><span class="token-name">color.info.bg</span></td><td><span class="token-value">#e6f4ff</span></td><td><span class="antd-ref">colorInfoBg</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert background</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+        <tr><td><span class="swatch" style="background:#91caff;"></span></td><td><span class="css-var">--color-info-border</span></td><td><span class="token-name">color.info.border</span></td><td><span class="token-value">#91caff</span></td><td><span class="antd-ref">colorInfoBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Alert border</span></td><td><span class="layer-badge lb-sem">Semantic</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- Alias -->
+    <div class="sub-table-label" style="margin-top:28px;"><span class="sub-dot" style="background:#047857;"></span>Alias Tokens — 18 tokens · Cross-component</div>
+    <table class="token-table">
+      <thead><tr><th class="w-preview">Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th class="w-value">Resolves To</th><th class="antd-th">AntD v5</th><th>Used For</th><th>Layer</th></tr></thead>
+      <tbody>
+        <tr class="group-header"><td colspan="7">Text</td></tr>
+        <tr><td><span class="swatch" style="background:#262626;"></span></td><td><span class="css-var">--color-text-default</span></td><td><span class="token-name">color.text.default</span></td><td><span class="token-value">#262626</span></td><td><span class="antd-ref">colorText</span></td><td><span style="font-size:11px;color:var(--ink-3);">Body text, paragraphs</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#737373;"></span></td><td><span class="css-var">--color-text-secondary</span></td><td><span class="token-name">color.text.secondary</span></td><td><span class="token-value">#737373</span></td><td><span class="antd-ref">colorTextSecondary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Subtitles, captions</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#bfbfbf;"></span></td><td><span class="css-var">--color-text-tertiary</span></td><td><span class="token-name">color.text.tertiary</span></td><td><span class="token-value">#bfbfbf</span></td><td><span class="antd-ref">colorTextTertiary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Placeholder, faint</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#d9d9d9;"></span></td><td><span class="css-var">--color-text-disabled</span></td><td><span class="token-name">color.text.disabled</span></td><td><span class="token-value">#d9d9d9</span></td><td><span class="antd-ref">colorTextDisabled</span></td><td><span style="font-size:11px;color:var(--ink-3);">Disabled input text</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch bordered" style="background:#ffffff;"></span></td><td><span class="css-var">--color-text-inverse</span></td><td><span class="token-name">color.text.inverse</span></td><td><span class="token-value">#ffffff</span></td><td><span class="antd-ref">colorWhite</span></td><td><span style="font-size:11px;color:var(--ink-3);">Text on dark bg</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#531dab;"></span></td><td><span class="css-var">--color-text-link</span></td><td><span class="token-name">color.text.link</span></td><td><span class="token-value">#531dab</span></td><td><span class="antd-ref">colorPrimary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Hyperlinks</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr class="group-header"><td colspan="7">Background</td></tr>
+        <tr><td><span class="swatch bordered" style="background:#ffffff;"></span></td><td><span class="css-var">--color-bg-base</span></td><td><span class="token-name">color.bg.base</span></td><td><span class="token-value">#ffffff</span></td><td><span class="antd-ref">colorBgBase</span></td><td><span style="font-size:11px;color:var(--ink-3);">Page bg, cards</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#fafafa;"></span></td><td><span class="css-var">--color-bg-subtle</span></td><td><span class="token-name">color.bg.subtle</span></td><td><span class="token-value">#fafafa</span></td><td><span class="antd-ref">colorBgLayout</span></td><td><span style="font-size:11px;color:var(--ink-3);">Sidebar, table rows</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f5f5f5;"></span></td><td><span class="css-var">--color-bg-muted</span></td><td><span class="token-name">color.bg.muted</span></td><td><span class="token-value">#f5f5f5</span></td><td><span class="antd-ref">colorFillAlter</span></td><td><span style="font-size:11px;color:var(--ink-3);">Disabled inputs, code</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#000000;"></span></td><td><span class="css-var">--color-bg-overlay</span></td><td><span class="token-name">color.bg.overlay</span></td><td><span class="token-value">#000000</span></td><td><span class="antd-ref">colorBgMask</span></td><td><span style="font-size:11px;color:var(--ink-3);">Modal overlays</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr class="group-header"><td colspan="7">Border</td></tr>
+        <tr><td><span class="swatch" style="background:#d9d9d9;"></span></td><td><span class="css-var">--color-border-default</span></td><td><span class="token-name">color.border.default</span></td><td><span class="token-value">#d9d9d9</span></td><td><span class="antd-ref">colorBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Input borders, card edges</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f0f0f0;"></span></td><td><span class="css-var">--color-border-subtle</span></td><td><span class="token-name">color.border.subtle</span></td><td><span class="token-value">#f0f0f0</span></td><td><span class="antd-ref">colorBorderSecondary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Dividers, row separators</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#9254de;"></span></td><td><span class="css-var">--color-border-focus</span></td><td><span class="token-name">color.border.focus</span></td><td><span class="token-value">#9254de</span></td><td><span class="antd-ref">colorPrimaryBorder</span></td><td><span style="font-size:11px;color:var(--ink-3);">Focused input ring</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#f5f5f5;"></span></td><td><span class="css-var">--color-border-disabled</span></td><td><span class="token-name">color.border.disabled</span></td><td><span class="token-value">#f5f5f5</span></td><td><span class="antd-ref na">colorFillAlter</span></td><td><span style="font-size:11px;color:var(--ink-3);">Disabled input edges</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr class="group-header"><td colspan="7">Icon</td></tr>
+        <tr><td><span class="swatch" style="background:#bfbfbf;"></span></td><td><span class="css-var">--color-icon-default</span></td><td><span class="token-name">color.icon.default</span></td><td><span class="token-value">#bfbfbf</span></td><td><span class="antd-ref">colorIcon</span></td><td><span style="font-size:11px;color:var(--ink-3);">Default UI icons</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+        <tr><td><span class="swatch" style="background:#531dab;"></span></td><td><span class="css-var">--color-icon-hover</span></td><td><span class="token-name">color.icon.hover</span></td><td><span class="token-value">#531dab</span></td><td><span class="antd-ref">colorIconHover</span></td><td><span style="font-size:11px;color:var(--ink-3);">Icon hover/active</span></td><td><span class="layer-badge lb-alias">Alias</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════ 02 SPACING ══════════ -->
+  <section class="chapter" id="spacing">
+    <div class="chapter-header">
+      <div class="ch-icon" style="background:#e6f4ff;">📐</div>
+      <div class="ch-meta"><div class="ch-num">02 · Spacing</div><div class="ch-title">Spacing Tokens</div></div>
+      <div class="ch-right">
+        <span class="pill pill-count">9 Padding · 9 Gap · 4px grid</span>
+        <span class="pill pill-antd">sizeUnit=4 · sizeStep=4 · size★=16px</span>
+      </div>
+    </div>
+    <table class="token-table">
+      <thead><tr><th>Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th>Value</th><th class="antd-th">AntD v5</th><th>Used For</th></tr></thead>
+      <tbody>
+        <tr class="group-header"><td colspan="6">Padding (space inside components)</td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:4px;background:var(--accent);border-radius:2px;opacity:.6;"></div></div></td><td><span class="css-var">--space-padding-xxs</span></td><td><span class="token-name">space.padding.XXS</span></td><td><span class="token-value">4px</span></td><td><span class="antd-ref">sizeXXS</span></td><td><span style="font-size:11px;color:var(--ink-3);">Icon padding, micro gaps</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:8px;background:var(--accent);border-radius:2px;opacity:.6;"></div></div></td><td><span class="css-var">--space-padding-xs</span></td><td><span class="token-name">space.padding.XS</span></td><td><span class="token-value">8px</span></td><td><span class="antd-ref">sizeXS</span></td><td><span style="font-size:11px;color:var(--ink-3);">Tag padding, tight controls</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:12px;background:var(--accent);border-radius:2px;opacity:.6;"></div></div></td><td><span class="css-var">--space-padding-sm</span></td><td><span class="token-name">space.padding.SM</span></td><td><span class="token-value">12px</span></td><td><span class="antd-ref">sizeSM</span></td><td><span style="font-size:11px;color:var(--ink-3);">Small button, compact input</span></td></tr>
+        <tr class="base-row"><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:16px;background:var(--accent);border-radius:2px;"></div></div></td><td><span class="css-var">--space-padding-md</span></td><td><span class="token-name">space.padding.MD <span class="base-star">BASE</span></span></td><td><span class="token-value">16px</span></td><td><span class="antd-ref" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">size ★ seed</span></td><td><span style="font-size:11px;color:var(--ink-3);">Default button, input</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:20px;background:var(--accent);border-radius:2px;opacity:.7;"></div></div></td><td><span class="css-var">--space-padding-lg</span></td><td><span class="token-name">space.padding.LG</span></td><td><span class="token-value">20px</span></td><td><span class="antd-ref">sizeMD</span></td><td><span style="font-size:11px;color:var(--ink-3);">Large button, card inner</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:24px;background:var(--accent);border-radius:2px;opacity:.65;"></div></div></td><td><span class="css-var">--space-padding-xl</span></td><td><span class="token-name">space.padding.XL</span></td><td><span class="token-value">24px</span></td><td><span class="antd-ref">sizeLG</span></td><td><span style="font-size:11px;color:var(--ink-3);">Card padding, section inner</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:32px;background:var(--accent);border-radius:2px;opacity:.55;"></div></div></td><td><span class="css-var">--space-padding-xxl</span></td><td><span class="token-name">space.padding.XXL</span></td><td><span class="token-value">32px</span></td><td><span class="antd-ref">sizeXL</span></td><td><span style="font-size:11px;color:var(--ink-3);">Modal padding, large sections</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:40px;background:var(--accent);border-radius:2px;opacity:.45;"></div></div></td><td><span class="css-var">--space-padding-xxxl</span></td><td><span class="token-name">space.padding.XXXL</span></td><td><span class="token-value">48px</span></td><td><span class="antd-ref">sizeXXL</span></td><td><span style="font-size:11px;color:var(--ink-3);">Page section padding</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;"><div style="height:8px;width:48px;background:var(--accent);border-radius:2px;opacity:.35;"></div></div></td><td><span class="css-var">--space-padding-4xl</span></td><td><span class="token-name">space.padding.4XL</span></td><td><span class="token-value">64px</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Page-level layouts</span></td></tr>
+        <tr class="group-header"><td colspan="6">Gap (space between children in flex/grid)</td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;gap:2px;"><div style="height:8px;width:8px;background:#1677ff;border-radius:2px;opacity:.5;"></div><div style="height:8px;width:2px;background:#1677ff;border-radius:1px;opacity:.4;"></div><div style="height:8px;width:8px;background:#1677ff;border-radius:2px;opacity:.5;"></div></div></td><td><span class="css-var">--space-gap-xxs</span></td><td><span class="token-name">space.gap.XXS</span></td><td><span class="token-value">4px</span></td><td><span class="antd-ref">sizeXXS</span></td><td><span style="font-size:11px;color:var(--ink-3);">Icon + label tight gap</span></td></tr>
+        <tr><td><div style="height:16px;display:flex;align-items:center;gap:4px;"><div style="height:8px;width:8px;background:#1677ff;border-radius:2px;opacity:.5;"></div><div style="height:8px;width:4px;background:#1677ff;border-radius:1px;opacity:.4;"></div><div style="height:8px;width:8px;background:#1677ff;border-radius:2px;opacity:.5;"></div></div></td><td><span class="css-var">--space-gap-xs</span></td><td><span class="token-name">space.gap.XS</span></td><td><span class="token-value">8px</span></td><td><span class="antd-ref">sizeXS</span></td><td><span style="font-size:11px;color:var(--ink-3);">Button group, inline items</span></td></tr>
+        <tr><td></td><td><span class="css-var">--space-gap-sm</span></td><td><span class="token-name">space.gap.SM</span></td><td><span class="token-value">12px</span></td><td><span class="antd-ref">sizeSM</span></td><td><span style="font-size:11px;color:var(--ink-3);">Form field gap</span></td></tr>
+        <tr class="base-row"><td></td><td><span class="css-var">--space-gap-md</span></td><td><span class="token-name">space.gap.MD <span class="base-star">BASE</span></span></td><td><span class="token-value">16px</span></td><td><span class="antd-ref" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">size ★ seed</span></td><td><span style="font-size:11px;color:var(--ink-3);">Default component gap</span></td></tr>
+        <tr><td></td><td><span class="css-var">--space-gap-lg</span></td><td><span class="token-name">space.gap.LG</span></td><td><span class="token-value">20px</span></td><td><span class="antd-ref">sizeMD</span></td><td><span style="font-size:11px;color:var(--ink-3);">Card grid gap</span></td></tr>
+        <tr><td></td><td><span class="css-var">--space-gap-xl</span></td><td><span class="token-name">space.gap.XL</span></td><td><span class="token-value">24px</span></td><td><span class="antd-ref">sizeLG</span></td><td><span style="font-size:11px;color:var(--ink-3);">Section gap</span></td></tr>
+        <tr><td></td><td><span class="css-var">--space-gap-xxl</span></td><td><span class="token-name">space.gap.XXL</span></td><td><span class="token-value">32px</span></td><td><span class="antd-ref">sizeXL</span></td><td><span style="font-size:11px;color:var(--ink-3);">Large layout gap</span></td></tr>
+        <tr><td></td><td><span class="css-var">--space-gap-xxxl</span></td><td><span class="token-name">space.gap.XXXL</span></td><td><span class="token-value">48px</span></td><td><span class="antd-ref">sizeXXL</span></td><td><span style="font-size:11px;color:var(--ink-3);">Page section gap</span></td></tr>
+        <tr><td></td><td><span class="css-var">--space-gap-4xl</span></td><td><span class="token-name">space.gap.4XL</span></td><td><span class="token-value">64px</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Hero / page-level gap</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════ 03 TYPOGRAPHY ══════════ -->
+  <section class="chapter" id="typography">
+    <div class="chapter-header">
+      <div class="ch-icon" style="background:#fff7e6;font-size:18px;">Aa</div>
+      <div class="ch-meta"><div class="ch-num">03 · Typography</div><div class="ch-title">Typography Tokens</div></div>
+      <div class="ch-right">
+        <span class="pill pill-count">9 Size · 5 Weight · 3 Family</span>
+        <span class="pill pill-antd">fontSize=14 · fontWeightStrong=600</span>
+      </div>
+    </div>
+    <table class="token-table">
+      <thead><tr><th>Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th>Value</th><th class="antd-th">AntD v5</th><th>Used For</th></tr></thead>
+      <tbody>
+        <tr class="group-header"><td colspan="6">Font Family</td></tr>
+        <tr><td><span class="family-sample" style="font-family:'Inter',sans-serif;">Aa</span></td><td><span class="css-var">--font-family-sans</span></td><td><span class="token-name">font.family.sans</span></td><td><span class="token-value">'Inter', sans-serif</span></td><td><span class="antd-ref">fontFamily</span></td><td><span style="font-size:11px;color:var(--ink-3);">All UI text, buttons, body</span></td></tr>
+        <tr><td><span class="family-sample" style="font-family:'Fraunces',serif;font-style:italic;">Aa</span></td><td><span class="css-var">--font-family-serif</span></td><td><span class="token-name">font.family.serif</span></td><td><span class="token-value">Fraunces, serif</span></td><td><span class="antd-ref na">— custom</span></td><td><span style="font-size:11px;color:var(--ink-3);">Display headings, editorial</span></td></tr>
+        <tr><td><span class="family-sample" style="font-family:'IBM Plex Mono',monospace;font-size:15px;">Aa</span></td><td><span class="css-var">--font-family-mono</span></td><td><span class="token-name">font.family.mono</span></td><td><span class="token-value">'IBM Plex Mono', monospace</span></td><td><span class="antd-ref">fontFamilyCode</span></td><td><span style="font-size:11px;color:var(--ink-3);">Code, token labels, data</span></td></tr>
+        <tr class="group-header"><td colspan="6">Font Size</td></tr>
+        <tr><td><span class="size-sample" style="font-size:10px;">Ag</span></td><td><span class="css-var">--font-size-xs</span></td><td><span class="token-name">font.size.XS</span></td><td><span class="token-value">10px</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Timestamps, fine print</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:12px;">Ag</span></td><td><span class="css-var">--font-size-sm</span></td><td><span class="token-name">font.size.SM</span></td><td><span class="token-value">12px</span></td><td><span class="antd-ref">fontSizeSM</span></td><td><span style="font-size:11px;color:var(--ink-3);">Captions, helper text, badges</span></td></tr>
+        <tr class="base-row"><td><span class="size-sample" style="font-size:14px;">Ag</span></td><td><span class="css-var">--font-size-md</span></td><td><span class="token-name">font.size.MD <span class="base-star">BASE</span></span></td><td><span class="token-value">14px</span></td><td><span class="antd-ref" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">fontSize ★ seed</span></td><td><span style="font-size:11px;color:var(--ink-3);">Body text, inputs, buttons</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:16px;">Ag</span></td><td><span class="css-var">--font-size-lg</span></td><td><span class="token-name">font.size.LG</span></td><td><span class="token-value">16px</span></td><td><span class="antd-ref">fontSizeLG</span></td><td><span style="font-size:11px;color:var(--ink-3);">Large body, subheadings</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:20px;">Ag</span></td><td><span class="css-var">--font-size-xl</span></td><td><span class="token-name">font.size.XL</span></td><td><span class="token-value">20px</span></td><td><span class="antd-ref">fontSizeXL</span></td><td><span style="font-size:11px;color:var(--ink-3);">Section intro, H5</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:24px;">Ag</span></td><td><span class="css-var">--font-size-2xl</span></td><td><span class="token-name">font.size.2XL</span></td><td><span class="token-value">24px</span></td><td><span class="antd-ref">fontSizeHeading3</span></td><td><span style="font-size:11px;color:var(--ink-3);">Card titles, H3</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:28px;">Ag</span></td><td><span class="css-var">--font-size-3xl</span></td><td><span class="token-name">font.size.3XL</span></td><td><span class="token-value">30px</span></td><td><span class="antd-ref">fontSizeHeading2</span></td><td><span style="font-size:11px;color:var(--ink-3);">Section headings, H2</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:34px;">Ag</span></td><td><span class="css-var">--font-size-4xl</span></td><td><span class="token-name">font.size.4XL</span></td><td><span class="token-value">38px</span></td><td><span class="antd-ref">fontSizeHeading1</span></td><td><span style="font-size:11px;color:var(--ink-3);">Page title, H1</span></td></tr>
+        <tr><td><span class="size-sample" style="font-size:38px;">Ag</span></td><td><span class="css-var">--font-size-5xl</span></td><td><span class="token-name">font.size.5XL</span></td><td><span class="token-value">48px</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Hero display</span></td></tr>
+        <tr class="group-header"><td colspan="6">Font Weight</td></tr>
+        <tr><td><span class="weight-sample" style="font-weight:300;">Ag</span></td><td><span class="css-var">--font-weight-light</span></td><td><span class="token-name">font.weight.light</span></td><td><span class="token-value">300</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Large decorative display</span></td></tr>
+        <tr class="base-row"><td><span class="weight-sample" style="font-weight:400;">Ag</span></td><td><span class="css-var">--font-weight-regular</span></td><td><span class="token-name">font.weight.regular <span class="base-star">BASE</span></span></td><td><span class="token-value">400</span></td><td><span class="antd-ref" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">fontWeight ★ seed</span></td><td><span style="font-size:11px;color:var(--ink-3);">Body text, paragraphs</span></td></tr>
+        <tr><td><span class="weight-sample" style="font-weight:500;">Ag</span></td><td><span class="css-var">--font-weight-medium</span></td><td><span class="token-name">font.weight.medium</span></td><td><span class="token-value">500</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Labels, nav, table headers</span></td></tr>
+        <tr><td><span class="weight-sample" style="font-weight:600;">Ag</span></td><td><span class="css-var">--font-weight-semibold</span></td><td><span class="token-name">font.weight.semibold</span></td><td><span class="token-value">600</span></td><td><span class="antd-ref">fontWeightStrong</span></td><td><span style="font-size:11px;color:var(--ink-3);">Headings, card titles</span></td></tr>
+        <tr><td><span class="weight-sample" style="font-weight:700;">Ag</span></td><td><span class="css-var">--font-weight-bold</span></td><td><span class="token-name">font.weight.bold</span></td><td><span class="token-value">700</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Maximum emphasis</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════ 04 BORDER RADIUS ══════════ -->
+  <section class="chapter" id="radius">
+    <div class="chapter-header">
+      <div class="ch-icon" style="background:#f6ffed;">⬜</div>
+      <div class="ch-meta"><div class="ch-num">04 · Shape</div><div class="ch-title">Border Radius Tokens</div></div>
+      <div class="ch-right">
+        <span class="pill pill-count">7 tokens · 0 → 9999px</span>
+        <span class="pill pill-antd">borderRadius=6 · borderRadiusSM=4 · borderRadiusLG=8</span>
+      </div>
+    </div>
+    <table class="token-table">
+      <thead><tr><th>Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th>Value</th><th class="antd-th">AntD v5</th><th>Used For</th></tr></thead>
+      <tbody>
+        <tr><td><div style="width:36px;height:24px;background:var(--accent);opacity:.5;border-radius:2px;"></div></td><td><span class="css-var">--radius-xs</span></td><td><span class="token-name">radius.XS</span></td><td><span class="token-value">2px</span></td><td><span class="antd-ref">borderRadiusXS</span></td><td><span style="font-size:11px;color:var(--ink-3);">Tooltips, micro chips</span></td></tr>
+        <tr><td><div style="width:36px;height:24px;background:var(--accent);opacity:.5;border-radius:4px;"></div></td><td><span class="css-var">--radius-sm</span></td><td><span class="token-name">radius.SM</span></td><td><span class="token-value">4px</span></td><td><span class="antd-ref">borderRadiusSM</span></td><td><span style="font-size:11px;color:var(--ink-3);">Badges, tags, small buttons</span></td></tr>
+        <tr class="base-row"><td><div style="width:36px;height:24px;background:var(--accent);border-radius:6px;"></div></td><td><span class="css-var">--radius-md</span></td><td><span class="token-name">radius.MD <span class="base-star">BASE</span></span></td><td><span class="token-value">6px</span></td><td><span class="antd-ref" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">borderRadius ★ seed</span></td><td><span style="font-size:11px;color:var(--ink-3);">Buttons, inputs, selects</span></td></tr>
+        <tr><td><div style="width:36px;height:24px;background:var(--accent);opacity:.6;border-radius:8px;"></div></td><td><span class="css-var">--radius-lg</span></td><td><span class="token-name">radius.LG</span></td><td><span class="token-value">8px</span></td><td><span class="antd-ref">borderRadiusLG</span></td><td><span style="font-size:11px;color:var(--ink-3);">Cards, dropdowns, menus</span></td></tr>
+        <tr><td><div style="width:52px;height:24px;background:var(--accent);opacity:.5;border-radius:9999px;"></div></td><td><span class="css-var">--radius-pill</span></td><td><span class="token-name">radius.pill</span></td><td><span class="token-value">9999px</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Pill buttons, status chips</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════ 05 SHADOW ══════════ -->
+  <section class="chapter" id="shadow">
+    <div class="chapter-header">
+      <div class="ch-icon" style="background:#f0f0f0;">🌒</div>
+      <div class="ch-meta"><div class="ch-num">05 · Elevation</div><div class="ch-title">Shadow Tokens</div></div>
+      <div class="ch-right">
+        <span class="pill pill-count">5 tokens · none → XL</span>
+        <span class="pill pill-antd">boxShadow · boxShadowSecondary · boxShadowTertiary</span>
+      </div>
+    </div>
+    <table class="token-table">
+      <thead><tr><th>Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th style="width:38%;">Value (CSS)</th><th class="antd-th">AntD v5</th><th>Used For</th></tr></thead>
+      <tbody>
+        <tr><td><div style="width:40px;height:24px;background:#fff;border-radius:5px;border:1px solid #e0e0e0;"></div></td><td><span class="css-var">--shadow-none</span></td><td><span class="token-name">shadow.none</span></td><td><span class="token-value">none</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Flat tables, flush surfaces</span></td></tr>
+        <tr><td><div style="width:40px;height:24px;background:#fff;border-radius:5px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 1px 6px -1px rgba(0,0,0,.03),0 2px 4px rgba(0,0,0,.03);"></div></td><td><span class="css-var">--shadow-sm</span></td><td><span class="token-name">shadow.SM</span></td><td><span class="token-value" style="font-size:10px;">0 1px 2px rgba(0,0,0,.04), 0 1px 6px -1px rgba(0,0,0,.03)</span></td><td><span class="antd-ref">boxShadowTertiary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Tags, subtle hover lift</span></td></tr>
+        <tr class="base-row"><td><div style="width:40px;height:24px;background:#fff;border-radius:5px;box-shadow:0 3px 6px -4px rgba(0,0,0,.12),0 6px 16px rgba(0,0,0,.08),0 9px 28px 8px rgba(0,0,0,.05);"></div></td><td><span class="css-var">--shadow-md</span></td><td><span class="token-name">shadow.MD <span class="base-star">BASE</span></span></td><td><span class="token-value" style="font-size:10px;">0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05)</span></td><td><span class="antd-ref" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">boxShadow ★</span></td><td><span style="font-size:11px;color:var(--ink-3);">Default cards, dropdowns</span></td></tr>
+        <tr><td><div style="width:40px;height:24px;background:#fff;border-radius:5px;box-shadow:0 6px 16px -2px rgba(0,0,0,.15),0 12px 28px rgba(0,0,0,.10),0 16px 40px 6px rgba(0,0,0,.07);"></div></td><td><span class="css-var">--shadow-lg</span></td><td><span class="token-name">shadow.LG</span></td><td><span class="token-value" style="font-size:10px;">0 6px 16px -2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.10)</span></td><td><span class="antd-ref">boxShadowSecondary</span></td><td><span style="font-size:11px;color:var(--ink-3);">Modals, dialogs, overlays</span></td></tr>
+        <tr><td><div style="width:40px;height:24px;background:#fff;border-radius:5px;box-shadow:0 12px 32px -4px rgba(0,0,0,.18),0 20px 48px rgba(0,0,0,.12),0 24px 64px 8px rgba(0,0,0,.08);"></div></td><td><span class="css-var">--shadow-xl</span></td><td><span class="token-name">shadow.XL</span></td><td><span class="token-value" style="font-size:10px;">0 12px 32px -4px rgba(0,0,0,.18), 0 20px 48px rgba(0,0,0,.12)</span></td><td><span class="antd-ref na">— extended</span></td><td><span style="font-size:11px;color:var(--ink-3);">Hero / feature sections</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════ 07 AI GRADIENTS ══════════ -->
+  <section class="chapter" id="ai">
+    <div class="chapter-header">
+      <div class="ch-icon" style="background:linear-gradient(135deg,#fff0f6,#f0f5ff);">✦</div>
+      <div class="ch-meta"><div class="ch-num">07 · AI Theme</div><div class="ch-title">AI Gradient Tokens</div></div>
+      <div class="ch-right">
+        <span class="pill pill-count">4 tokens · Pink → Blue</span>
+        <span class="pill" style="color:#531dab;border-color:#d3adf7;background:#fff0f6;">#FFF0F6 → #F0F5FF</span>
+      </div>
+    </div>
+
+    <!-- Note -->
+    <div style="background:#fff0f6;border:1px solid #ffadd2;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#9e1068;font-family:var(--mono);display:flex;gap:10px;align-items:flex-start;">
+      <span>⚠</span>
+      <span>AntD ConfigProvider does not support gradient tokens natively. These must be applied via CSS custom properties, styled-components, or className on AI-specific components.</span>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th style="width:100px;">Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th>Value (CSS gradient)</th><th>Used For</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td><div style="height:26px;width:90px;border-radius:5px;background:linear-gradient(93.94deg,#FFF0F6 0%,#F0F5FF 100%);"></div></td>
+          <td><span class="css-var">--ai-theme-text</span></td>
+          <td><span class="token-name">ai.text</span></td>
+          <td><span class="token-value" style="font-size:11px;">linear-gradient(93.94deg, #FFF0F6 0%, #F0F5FF 100%)</span></td>
+          <td><span style="font-size:11px;color:var(--ink-3);">Gradient text via background-clip</span></td>
+          <td><span style="font-family:var(--mono);font-size:10px;color:#9e1068;background:#fff0f6;border:1px solid #ffadd2;padding:2px 6px;border-radius:3px;">CSS only</span></td></tr>
+        <tr><td><div style="height:26px;width:90px;border-radius:5px;background:linear-gradient(64.05deg,#FFF0F6 32.12%,#F0F5FF 67.27%);border:1px solid #ffadd2;"></div></td>
+          <td><span class="css-var">--ai-theme-background</span></td>
+          <td><span class="token-name">ai.background</span></td>
+          <td><span class="token-value" style="font-size:11px;">linear-gradient(64.05deg, #FFF0F6 32.12%, #F0F5FF 67.27%)</span></td>
+          <td><span style="font-size:11px;color:var(--ink-3);">AI feature panel background</span></td>
+          <td><span style="font-family:var(--mono);font-size:10px;color:#9e1068;background:#fff0f6;border:1px solid #ffadd2;padding:2px 6px;border-radius:3px;">CSS only</span></td></tr>
+        <tr><td><div style="height:26px;width:90px;border-radius:5px;background:linear-gradient(93.94deg,#FFF0F6 0%,#F0F5FF 100%);"></div></td>
+          <td><span class="css-var">--ai-theme-icon</span></td>
+          <td><span class="token-name">ai.icon</span></td>
+          <td><span class="token-value" style="font-size:11px;">linear-gradient(93.94deg, #FFF0F6 0%, #F0F5FF 100%)</span></td>
+          <td><span style="font-size:11px;color:var(--ink-3);">SVG icon fill via CSS mask</span></td>
+          <td><span style="font-family:var(--mono);font-size:10px;color:#9e1068;background:#fff0f6;border:1px solid #ffadd2;padding:2px 6px;border-radius:3px;">= ai.text</span></td></tr>
+        <tr><td><div style="height:26px;width:90px;border-radius:5px;background:linear-gradient(64.05deg,#FFD6E7 32.12%,#D6E4FF 67.27%);"></div></td>
+          <td><span class="css-var">--ai-theme-border</span></td>
+          <td><span class="token-name">ai.border</span></td>
+          <td><span class="token-value" style="font-size:11px;">linear-gradient(64.05deg, #FFD6E7 32.12%, #D6E4FF 67.27%)</span></td>
+          <td><span style="font-size:11px;color:var(--ink-3);">Gradient border via padding-box trick</span></td>
+          <td><span style="font-family:var(--mono);font-size:10px;color:#9e1068;background:#fff0f6;border:1px solid #ffadd2;padding:2px 6px;border-radius:3px;">CSS only</span></td></tr>
+      </tbody>
+    </table>
+
+    <!-- Primitives -->
+    <div class="sub-table-label" style="margin-top:20px;"><span class="sub-dot" style="background:#FFF0F6;"></span>AI Primitive Stop Colors</div>
+    <table class="token-table">
+      <thead><tr><th>Preview</th><th class="w-css">CSS Variable</th><th class="w-token">Token Name</th><th>Value</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><span class="swatch" style="background:#FFF0F6;border:1px solid #ffadd2;"></span></td><td><span class="css-var">--ai-pink</span></td><td><span class="token-name">ai-pink</span></td><td><span class="token-value">#FFF0F6</span></td><td><span style="font-size:11px;color:var(--ink-3);">magenta-1 · text/icon start</span></td></tr>
+        <tr><td><span class="swatch" style="background:#F0F5FF;border:1px solid #d6e4ff;"></span></td><td><span class="css-var">--ai-blue</span></td><td><span class="token-name">ai-blue</span></td><td><span class="token-value">#F0F5FF</span></td><td><span style="font-size:11px;color:var(--ink-3);">geekblue-1 · text/icon end</span></td></tr>
+        <tr><td><span class="swatch" style="background:#FFF0F6;border:1px solid #ffadd2;"></span></td><td><span class="css-var">--ai-pink-light</span></td><td><span class="token-name">ai-pink-light</span></td><td><span class="token-value">#FFF0F6</span></td><td><span style="font-size:11px;color:var(--ink-3);">magenta-1 · BG start</span></td></tr>
+        <tr><td><span class="swatch" style="background:#F0F5FF;border:1px solid #d6e4ff;"></span></td><td><span class="css-var">--ai-blue-light</span></td><td><span class="token-name">ai-blue-light</span></td><td><span class="token-value">#F0F5FF</span></td><td><span style="font-size:11px;color:var(--ink-3);">geekblue-1 · BG end</span></td></tr>
+        <tr><td><span class="swatch" style="background:#FFD6E7;border:1px solid #ffadd2;"></span></td><td><span class="css-var">--ai-pink-mid</span></td><td><span class="token-name">ai-pink-mid</span></td><td><span class="token-value">#FFD6E7</span></td><td><span style="font-size:11px;color:var(--ink-3);">magenta-2 · border start</span></td></tr>
+        <tr><td><span class="swatch" style="background:#D6E4FF;border:1px solid #d6e4ff;"></span></td><td><span class="css-var">--ai-blue-mid</span></td><td><span class="token-name">ai-blue-mid</span></td><td><span class="token-value">#D6E4FF</span></td><td><span style="font-size:11px;color:var(--ink-3);">geekblue-2 · border end</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════ ConfigProvider ══════════ -->
+  <div class="config-chapter" id="config">
+    <div class="config-label">AntD v5 ConfigProvider — Complete theme.token</div>
+    <pre class="config-code"><span class="cc">// theme/tokens.ts</span>
+<span class="ck">import type</span> { ThemeConfig } <span class="ck">from</span> <span class="cs">'antd'</span>;
+
+<span class="ck">const</span> theme: ThemeConfig = {
+  token: {
+    <span class="cc">// ── Color ─────────────────────────────────────────────</span>
+    <span class="ck">colorPrimary</span>:          <span class="cs">'#531dab'</span>,
+    <span class="ck">colorSuccess</span>:          <span class="cs">'#52c41a'</span>,
+    <span class="ck">colorWarning</span>:          <span class="cs">'#ffa940'</span>,
+    <span class="ck">colorError</span>:            <span class="cs">'#ff4d4f'</span>,
+    <span class="ck">colorInfo</span>:             <span class="cs">'#1677ff'</span>,
+    <span class="ck">colorText</span>:             <span class="cs">'#262626'</span>,
+    <span class="ck">colorTextSecondary</span>:    <span class="cs">'#737373'</span>,
+    <span class="ck">colorTextTertiary</span>:     <span class="cs">'#bfbfbf'</span>,
+    <span class="ck">colorTextDisabled</span>:     <span class="cs">'#d9d9d9'</span>,
+    <span class="ck">colorBgBase</span>:           <span class="cs">'#ffffff'</span>,
+    <span class="ck">colorBgLayout</span>:         <span class="cs">'#fafafa'</span>,
+    <span class="ck">colorBorder</span>:           <span class="cs">'#d9d9d9'</span>,
+    <span class="ck">colorBorderSecondary</span>:  <span class="cs">'#f0f0f0'</span>,
+
+    <span class="cc">// ── Typography ────────────────────────────────────────</span>
+    <span class="ck">fontFamily</span>:            <span class="cs">"'Inter', sans-serif"</span>,
+    <span class="ck">fontFamilyCode</span>:        <span class="cs">"'IBM Plex Mono', monospace"</span>,
+    <span class="ck">fontSize</span>:              <span class="cv">14</span>,
+    <span class="ck">fontWeightStrong</span>:      <span class="cv">600</span>,
+
+    <span class="cc">// ── Spacing ───────────────────────────────────────────</span>
+    <span class="ck">sizeUnit</span>:              <span class="cv">4</span>,
+    <span class="ck">sizeStep</span>:              <span class="cv">4</span>,
+
+    <span class="cc">// ── Border Radius ─────────────────────────────────────</span>
+    <span class="ck">borderRadius</span>:          <span class="cv">6</span>,
+    <span class="ck">borderRadiusXS</span>:        <span class="cv">2</span>,
+    <span class="ck">borderRadiusSM</span>:        <span class="cv">4</span>,
+    <span class="ck">borderRadiusLG</span>:        <span class="cv">8</span>,
+
+    <span class="cc">// ── Shadow ────────────────────────────────────────────</span>
+    <span class="ck">boxShadow</span>:             <span class="cs">'0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05)'</span>,
+    <span class="ck">boxShadowSecondary</span>:    <span class="cs">'0 6px 16px -2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.10), 0 16px 40px 6px rgba(0,0,0,.07)'</span>,
+    <span class="ck">boxShadowTertiary</span>:     <span class="cs">'0 1px 2px rgba(0,0,0,.04), 0 1px 6px -1px rgba(0,0,0,.03), 0 2px 4px rgba(0,0,0,.03)'</span>,
+
+    <span class="cc">// ── Component Height ──────────────────────────────────</span>
+    <span class="ck">controlHeight</span>:         <span class="cv">32</span>,
+    <span class="ck">controlHeightXS</span>:       <span class="cv">24</span>,
+    <span class="ck">controlHeightSM</span>:       <span class="cv">28</span>,
+    <span class="ck">controlHeightLG</span>:       <span class="cv">40</span>,
+    <span class="ck">controlHeightXL</span>:       <span class="cv">48</span>,
+  },
+};
+
+<span class="ck">export default</span> theme;
+
+<span class="cc">/* ─────────────────────────────────────────────────────────
+   AI Gradient Tokens — apply via CSS (not ConfigProvider)
+   ───────────────────────────────────────────────────────── */</span>
+<span class="cc">/* globals.css */</span>
+:root {
+  --ai-theme-text:       <span class="cs">linear-gradient(93.94deg, #FFF0F6 0%, #F0F5FF 100%)</span>;
+  --ai-theme-background: <span class="cs">linear-gradient(64.05deg, #FFF0F6 32.12%, #F0F5FF 67.27%)</span>;
+  --ai-theme-icon:       <span class="cs">linear-gradient(93.94deg, #FFF0F6 0%, #F0F5FF 100%)</span>;
+  --ai-theme-border:     <span class="cs">linear-gradient(64.05deg, #FFD6E7 32.12%, #D6E4FF 67.27%)</span>;
+}</pre>
+  </div>
+
+</main>
+
+<script>
+const navItems = document.querySelectorAll('.nav-item');
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    navItems.forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+const sections = document.querySelectorAll('section[id], div[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.toggle('active', n.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { threshold: 0.15, rootMargin: '-5% 0px -75% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

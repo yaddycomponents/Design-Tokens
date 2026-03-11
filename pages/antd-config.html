@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AntD Theme Config — v5 & v6</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0d18;
+  --surface:#17142a;
+  --surface-2:#1e1a32;
+  --surface-3:#252140;
+  --ink:#e8e2f8;
+  --ink-2:#a89fd0;
+  --ink-3:#6a5fa0;
+  --rule:#2a2545;
+  --primary:#9254de;
+  --primary-bg:rgba(146,84,222,.12);
+  --success:#52c41a;
+  --error:#ff4d4f;
+  --warning:#ffa940;
+  --info:#1677ff;
+  --orange:#d46b08;
+  --v5:#1677ff;
+  --v6:#7c3aed;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.5;min-height:100vh;display:flex;}
+
+/* ── Sidebar ── */
+.sidenav{width:200px;flex-shrink:0;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--rule);display:flex;flex-direction:column;z-index:100;scrollbar-width:thin;scrollbar-color:var(--rule) transparent;}
+.sidenav::-webkit-scrollbar{width:3px;}
+.sidenav::-webkit-scrollbar-thumb{background:var(--rule);}
+.nav-logo{padding:16px 14px 12px;border-bottom:1px solid var(--rule);}
+.nav-logo-title{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink);letter-spacing:.04em;}
+.nav-logo-sub{font-family:var(--mono);font-size:8.5px;color:var(--ink-3);margin-top:2px;letter-spacing:.1em;}
+.nav-group{padding:10px 0 4px;}
+.nav-group-label{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);padding:0 14px;margin-bottom:4px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 14px;cursor:pointer;text-decoration:none;border-left:2px solid transparent;transition:background .1s;}
+.nav-item:hover{background:var(--primary-bg);}
+.nav-item.active{background:var(--primary-bg);border-left-color:var(--primary);}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.nav-label{font-family:var(--mono);font-size:10px;color:var(--ink-2);letter-spacing:.02em;}
+.nav-item.active .nav-label{color:var(--ink);}
+.nav-foot{margin-top:auto;padding:10px 14px;border-top:1px solid var(--rule);}
+.version-pills{display:flex;gap:5px;}
+.vpill{font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:3px;font-weight:600;letter-spacing:.05em;}
+.vpill-v5{background:rgba(22,119,255,.15);color:#69b1ff;border:1px solid rgba(22,119,255,.3);}
+.vpill-v6{background:rgba(124,58,237,.15);color:#c4b5fd;border:1px solid rgba(124,58,237,.3);}
+
+/* ── Main ── */
+.main{margin-left:200px;flex:1;min-width:0;}
+
+/* ── Hero ── */
+.hero{padding:40px 48px 28px;border-bottom:1px solid var(--rule);}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
+.hero-title{font-size:26px;font-weight:700;letter-spacing:-.025em;color:var(--ink);margin-bottom:5px;}
+.hero-title .v5{color:#69b1ff;}
+.hero-title .v6{color:#c4b5fd;}
+.hero-sub{font-size:12px;color:var(--ink-2);margin-bottom:20px;max-width:560px;line-height:1.6;}
+.hero-cards{display:flex;gap:12px;flex-wrap:wrap;}
+.hcard{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:12px 16px;min-width:140px;}
+.hcard-val{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ink);}
+.hcard-lbl{font-family:var(--mono);font-size:8px;color:var(--ink-3);letter-spacing:.12em;text-transform:uppercase;margin-top:2px;}
+
+/* ── Version tab bar ── */
+.tab-bar{display:flex;gap:0;border-bottom:1px solid var(--rule);background:var(--surface);padding:0 48px;position:sticky;top:0;z-index:50;}
+.tab{padding:12px 20px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s;color:var(--ink-3);}
+.tab:hover{color:var(--ink-2);}
+.tab.v5-tab.active{color:#69b1ff;border-bottom-color:#1677ff;}
+.tab.v6-tab.active{color:#c4b5fd;border-bottom-color:#7c3aed;}
+
+/* ── Section ── */
+.section{padding:36px 48px;border-bottom:1px solid var(--rule);}
+.section:last-child{border-bottom:none;}
+.section-header{margin-bottom:20px;}
+.section-eyebrow{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px;}
+.section-title{font-size:16px;font-weight:700;letter-spacing:-.015em;color:var(--ink);}
+.section-desc{font-size:11.5px;color:var(--ink-2);margin-top:4px;line-height:1.6;}
+
+/* ── Code block ── */
+.code-wrap{position:relative;margin-bottom:20px;}
+.code-label{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.code-label-text{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);}
+.code-badge{font-family:var(--mono);font-size:8px;padding:2px 7px;border-radius:3px;font-weight:600;}
+.cb-v5{background:rgba(22,119,255,.15);color:#69b1ff;border:1px solid rgba(22,119,255,.25);}
+.cb-v6{background:rgba(124,58,237,.15);color:#c4b5fd;border:1px solid rgba(124,58,237,.25);}
+.cb-ts{background:rgba(0,122,204,.15);color:#60a5fa;border:1px solid rgba(0,122,204,.2);}
+.cb-file{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--rule);}
+.copy-btn{margin-left:auto;background:var(--surface-2);border:1px solid var(--rule);color:var(--ink-3);font-family:var(--mono);font-size:8.5px;padding:3px 10px;border-radius:4px;cursor:pointer;transition:all .15s;letter-spacing:.05em;}
+.copy-btn:hover{color:var(--ink);border-color:var(--primary);background:var(--primary-bg);}
+pre{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:20px 24px;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:1.8;tab-size:2;}
+pre::-webkit-scrollbar{height:4px;}
+pre::-webkit-scrollbar-thumb{background:var(--rule);}
+
+/* Syntax */
+.ck{color:#c4b5fd;}           /* key — purple */
+.cs{color:#86efac;}           /* string — green */
+.cv{color:#fbbf24;}           /* number — amber */
+.cc{color:var(--ink-3);font-style:italic;} /* comment */
+.ci{color:#93c5fd;}           /* import */
+.ct{color:#f9a8d4;}           /* type */
+.cm{color:#67e8f9;}           /* method */
+.cf{color:#fb923c;}           /* flag/keyword */
+
+/* ── Diff section ── */
+.diff-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--rule);border-radius:8px;overflow:hidden;}
+.diff-table th{padding:8px 14px;font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--rule);text-align:left;}
+.diff-table th.v5h{color:#69b1ff;}
+.diff-table th.v6h{color:#c4b5fd;}
+.diff-table td{padding:8px 14px;border-bottom:1px solid var(--surface-2);vertical-align:top;font-family:var(--mono);font-size:11px;}
+.diff-table tr:last-child td{border-bottom:none;}
+.diff-table tr:hover td{background:var(--surface-2);}
+.dk{color:var(--ink-2);}
+.dv5{color:#93c5fd;}
+.dv6{color:#d8b4fe;}
+.dnote{color:var(--ink-3);font-size:10px;}
+.diff-added{color:#86efac;}
+.diff-removed{color:#fca5a5;text-decoration:line-through;}
+.diff-changed{color:#fde68a;}
+
+/* ── Token grid ── */
+.token-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin-top:8px;}
+.tcard{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;}
+.tcard-name{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--primary);margin-bottom:4px;}
+.tcard-val{font-family:var(--mono);font-size:11px;color:var(--ink-2);}
+.tcard-swatch{width:28px;height:16px;border-radius:3px;display:inline-block;vertical-align:middle;margin-right:6px;border:1px solid rgba(255,255,255,.06);}
+
+/* ── Callout ── */
+.callout{border-left:3px solid;border-radius:0 6px 6px 0;padding:12px 16px;margin:14px 0;font-size:12px;line-height:1.6;}
+.callout-info{border-color:#1677ff;background:rgba(22,119,255,.08);color:#93c5fd;}
+.callout-warning{border-color:#ffa940;background:rgba(255,169,64,.08);color:#fcd34d;}
+.callout-tip{border-color:#52c41a;background:rgba(82,196,26,.08);color:#86efac;}
+.callout-title{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;font-weight:600;}
+</style>
+<link rel="stylesheet" href="../shared-theme.css">
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav class="sidenav">
+  <div class="nav-logo">
+    <div class="nav-logo-title">AntD Theme Config</div>
+    <div class="nav-logo-sub">Design System · v5 & v6</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Overview</div>
+    <a class="nav-item active" href="#overview"><div class="nav-dot" style="background:linear-gradient(135deg,#69b1ff,#c4b5fd);"></div><span class="nav-label">Introduction</span></a>
+    <a class="nav-item" href="#differences"><div class="nav-dot" style="background:#fbbf24;"></div><span class="nav-label">v5 vs v6 Diff</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">AntD v5</div>
+    <a class="nav-item" href="#v5-seed"><div class="nav-dot" style="background:#69b1ff;"></div><span class="nav-label">Seed Tokens</span></a>
+    <a class="nav-item" href="#v5-components"><div class="nav-dot" style="background:#93c5fd;"></div><span class="nav-label">Component Tokens</span></a>
+    <a class="nav-item" href="#v5-provider"><div class="nav-dot" style="background:#bfdbfe;"></div><span class="nav-label">ConfigProvider</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">AntD v6</div>
+    <a class="nav-item" href="#v6-seed"><div class="nav-dot" style="background:#c4b5fd;"></div><span class="nav-label">Seed Tokens</span></a>
+    <a class="nav-item" href="#v6-css"><div class="nav-dot" style="background:#d8b4fe;"></div><span class="nav-label">CSS Variables</span></a>
+    <a class="nav-item" href="#v6-components"><div class="nav-dot" style="background:#e9d5ff;"></div><span class="nav-label">Component Tokens</span></a>
+    <a class="nav-item" href="#v6-provider"><div class="nav-dot" style="background:#f3e8ff;"></div><span class="nav-label">ConfigProvider</span></a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Extras</div>
+    <a class="nav-item" href="#ai-tokens"><div class="nav-dot" style="background:linear-gradient(135deg,#FFF0F6,#F0F5FF);border:1px solid #6a5fa0;"></div><span class="nav-label">AI Gradient Tokens</span></a>
+    <a class="nav-item" href="#fonts"><div class="nav-dot" style="background:#67e8f9;"></div><span class="nav-label">Font Setup</span></a>
+  </div>
+  <div class="nav-foot">
+    <div class="version-pills">
+      <span class="vpill vpill-v5">v5</span>
+      <span class="vpill vpill-v6">v6</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+
+<!-- Hero -->
+<div class="hero" id="overview">
+  <div class="hero-eyebrow">Design System · AntD Theme Configuration</div>
+  <div class="hero-title">AntD <span class="v5">v5</span> & <span class="v6">v6</span> Config</div>
+  <div class="hero-sub">Complete theme configuration files for both AntD versions — all design system tokens mapped to seed tokens, component overrides, CSS variable mode, and AI gradient tokens.</div>
+  <div class="hero-cards">
+    <div class="hcard"><div class="hcard-val">#531dab</div><div class="hcard-lbl">Primary</div></div>
+    <div class="hcard"><div class="hcard-val">Inter</div><div class="hcard-lbl">Font</div></div>
+    <div class="hcard"><div class="hcard-val">4px</div><div class="hcard-lbl">Grid</div></div>
+    <div class="hcard"><div class="hcard-val">6px</div><div class="hcard-lbl">Radius</div></div>
+    <div class="hcard"><div class="hcard-val">32px</div><div class="hcard-lbl">Base Height</div></div>
+    <div class="hcard"><div class="hcard-val">28</div><div class="hcard-lbl">Components</div></div>
+  </div>
+</div>
+
+<!-- ══════════ v5 vs v6 DIFF ══════════ -->
+<section class="section" id="differences">
+  <div class="section-header">
+    <div class="section-eyebrow">Comparison</div>
+    <div class="section-title">AntD v5 vs v6 — Key Differences</div>
+    <div class="section-desc">Understand what changed between versions before choosing your config file.</div>
+  </div>
+
+  <table class="diff-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th class="v5h">v5</th>
+        <th class="v6h">v6</th>
+        <th>Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="dk">Styling engine</td><td class="dv5">CSS-in-JS (cssinjs)</td><td class="dv6">CSS Variables (native)</td><td class="dnote">v6 = zero-runtime, no hashed classes</td></tr>
+      <tr><td class="dk">CSS Variables mode</td><td class="dv5">opt-in via <code style="color:#fbbf24">cssVar:true</code></td><td class="dv6">on by default</td><td class="dnote">v6 outputs <code style="color:#fbbf24">--ant-*</code> vars automatically</td></tr>
+      <tr><td class="dk">useToken hook</td><td class="dv5">returns <code style="color:#fbbf24">{token}</code></td><td class="dv6">returns <code style="color:#fbbf24">{token, cssVar}</code></td><td class="dnote">v6 gives var name + value</td></tr>
+      <tr><td class="dk">Less support</td><td class="dv5">✅ supported</td><td class="dv6 diff-removed">dropped</td><td class="dnote">v6 CSS vars only</td></tr>
+      <tr><td class="dk">zeroRuntime</td><td class="dv5">—</td><td class="dv6 diff-added">available</td><td class="dnote">Best perf, static extraction</td></tr>
+      <tr><td class="dk">controlHeightXL</td><td class="dv5 diff-removed">not available</td><td class="dv6 diff-added">48px added</td><td class="dnote">New size step in v6</td></tr>
+      <tr><td class="dk">fontWeightStrong</td><td class="dv5">600</td><td class="dv6">600</td><td class="dnote">Same value, both versions</td></tr>
+      <tr><td class="dk">Theme algorithm</td><td class="dv5"><code style="color:#fbbf24">theme.defaultAlgorithm</code></td><td class="dv6"><code style="color:#fbbf24">theme.defaultAlgorithm</code></td><td class="dnote">Same API</td></tr>
+      <tr><td class="dk">Component tokens</td><td class="dv5">via <code style="color:#fbbf24">components</code> block</td><td class="dv6">via <code style="color:#fbbf24">components</code> block</td><td class="dnote">Same structure, more tokens in v6</td></tr>
+      <tr><td class="dk">Custom tokens</td><td class="dv5">via <code style="color:#fbbf24">token</code> extend</td><td class="dv6">in <code style="color:#fbbf24">:root</code> CSS vars</td><td class="dnote">AI tokens go in globals.css in v6</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════════ v5 SEED TOKENS ══════════ -->
+<section class="section" id="v5-seed">
+  <div class="section-header">
+    <div class="section-eyebrow">AntD v5 · Seed Tokens</div>
+    <div class="section-title">theme/tokens.v5.ts</div>
+    <div class="section-desc">Global seed tokens — these drive the entire algorithm-generated token tree.</div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-v5">AntD v5</span>
+      <span class="code-badge cb-ts">TypeScript</span>
+      <span class="code-badge cb-file">theme/tokens.v5.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="ci">import type</span> { <span class="ct">ThemeConfig</span> } <span class="ci">from</span> <span class="cs">'antd'</span>;
+
+<span class="cc">// ─────────────────────────────────────────────────────</span>
+<span class="cc">// AntD v5 Theme Config — Design System Token Mapping</span>
+<span class="cc">// Seed tokens feed the algorithm to generate 400+ tokens</span>
+<span class="cc">// ─────────────────────────────────────────────────────</span>
+
+<span class="cf">const</span> <span class="ct">theme</span>: <span class="ct">ThemeConfig</span> = {
+  <span class="ck">token</span>: {
+
+    <span class="cc">// ── Color: Brand ──────────────────────────────────</span>
+    <span class="ck">colorPrimary</span>:           <span class="cs">'#531dab'</span>,  <span class="cc">// purple-7 · brand seed</span>
+    <span class="ck">colorSuccess</span>:           <span class="cs">'#52c41a'</span>,  <span class="cc">// green-6  · success seed</span>
+    <span class="ck">colorWarning</span>:           <span class="cs">'#ffa940'</span>,  <span class="cc">// orange-5 · warning seed</span>
+    <span class="ck">colorError</span>:             <span class="cs">'#ff4d4f'</span>,  <span class="cc">// red-5    · error seed</span>
+    <span class="ck">colorInfo</span>:              <span class="cs">'#1677ff'</span>,  <span class="cc">// blue-6   · info seed</span>
+
+    <span class="cc">// ── Color: Text ───────────────────────────────────</span>
+    <span class="ck">colorText</span>:              <span class="cs">'#262626'</span>,  <span class="cc">// gray-9   · primary text</span>
+    <span class="ck">colorTextSecondary</span>:     <span class="cs">'#737373'</span>,  <span class="cc">// gray-6   · secondary text</span>
+    <span class="ck">colorTextTertiary</span>:      <span class="cs">'#bfbfbf'</span>,  <span class="cc">// gray-4   · placeholder text</span>
+    <span class="ck">colorTextDisabled</span>:      <span class="cs">'#d9d9d9'</span>,  <span class="cc">// gray-3   · disabled text</span>
+
+    <span class="cc">// ── Color: Background ─────────────────────────────</span>
+    <span class="ck">colorBgBase</span>:            <span class="cs">'#ffffff'</span>,  <span class="cc">// gray-1   · component bg</span>
+    <span class="ck">colorBgLayout</span>:          <span class="cs">'#fafafa'</span>,  <span class="cc">// gray-1+  · page layout bg</span>
+    <span class="ck">colorBgContainer</span>:       <span class="cs">'#ffffff'</span>,  <span class="cc">// card/panel bg</span>
+    <span class="ck">colorBgElevated</span>:        <span class="cs">'#ffffff'</span>,  <span class="cc">// dropdown/modal bg</span>
+
+    <span class="cc">// ── Color: Border ─────────────────────────────────</span>
+    <span class="ck">colorBorder</span>:            <span class="cs">'#d9d9d9'</span>,  <span class="cc">// default border</span>
+    <span class="ck">colorBorderSecondary</span>:   <span class="cs">'#f0f0f0'</span>,  <span class="cc">// subtle separator</span>
+
+    <span class="cc">// ── Typography ────────────────────────────────────</span>
+    <span class="ck">fontFamily</span>:             <span class="cs">"'Inter', sans-serif"</span>,      <span class="cc">// font.family.sans</span>
+    <span class="ck">fontFamilyCode</span>:         <span class="cs">"'IBM Plex Mono', monospace"</span>, <span class="cc">// font.family.mono</span>
+    <span class="ck">fontSize</span>:               <span class="cv">14</span>,         <span class="cc">// font.size.MD ★ base</span>
+    <span class="ck">fontSizeSM</span>:             <span class="cv">12</span>,         <span class="cc">// font.size.SM</span>
+    <span class="ck">fontSizeLG</span>:             <span class="cv">16</span>,         <span class="cc">// font.size.LG</span>
+    <span class="ck">fontSizeXL</span>:             <span class="cv">20</span>,         <span class="cc">// font.size.XL</span>
+    <span class="ck">fontSizeHeading1</span>:       <span class="cv">38</span>,         <span class="cc">// font.size.4XL</span>
+    <span class="ck">fontSizeHeading2</span>:       <span class="cv">30</span>,         <span class="cc">// font.size.3XL</span>
+    <span class="ck">fontSizeHeading3</span>:       <span class="cv">24</span>,         <span class="cc">// font.size.2XL</span>
+    <span class="ck">fontSizeHeading4</span>:       <span class="cv">20</span>,         <span class="cc">// font.size.XL</span>
+    <span class="ck">fontSizeHeading5</span>:       <span class="cv">16</span>,         <span class="cc">// font.size.LG</span>
+    <span class="ck">fontWeightStrong</span>:       <span class="cv">600</span>,        <span class="cc">// font.weight.semibold</span>
+
+    <span class="cc">// ── Spacing / Grid ────────────────────────────────</span>
+    <span class="ck">sizeUnit</span>:               <span class="cv">4</span>,          <span class="cc">// 4px base grid unit</span>
+    <span class="ck">sizeStep</span>:               <span class="cv">4</span>,          <span class="cc">// 4px step increment</span>
+    <span class="ck">sizeXS</span>:                 <span class="cv">8</span>,          <span class="cc">// space.XXS</span>
+    <span class="ck">sizeSM</span>:                 <span class="cv">12</span>,         <span class="cc">// space.SM</span>
+    <span class="ck">sizeMD</span>:                 <span class="cv">16</span>,         <span class="cc">// space.MD ★</span>
+    <span class="ck">sizeLG</span>:                 <span class="cv">20</span>,         <span class="cc">// space.LG</span>
+    <span class="ck">sizeXL</span>:                 <span class="cv">24</span>,         <span class="cc">// space.XL</span>
+    <span class="ck">sizeXXL</span>:                <span class="cv">32</span>,         <span class="cc">// space.XXL</span>
+
+    <span class="cc">// ── Border Radius ─────────────────────────────────</span>
+    <span class="ck">borderRadius</span>:           <span class="cv">6</span>,          <span class="cc">// radius.MD ★ base</span>
+    <span class="ck">borderRadiusXS</span>:         <span class="cv">2</span>,          <span class="cc">// radius.XS</span>
+    <span class="ck">borderRadiusSM</span>:         <span class="cv">4</span>,          <span class="cc">// radius.SM</span>
+    <span class="ck">borderRadiusLG</span>:         <span class="cv">8</span>,          <span class="cc">// radius.LG</span>
+    <span class="ck">borderRadiusOuter</span>:      <span class="cv">8</span>,          <span class="cc">// outer wrapper radius</span>
+
+    <span class="cc">// ── Shadow / Elevation ────────────────────────────</span>
+    <span class="ck">boxShadow</span>:              <span class="cs">'0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05)'</span>,  <span class="cc">// shadow.MD ★</span>
+    <span class="ck">boxShadowSecondary</span>:     <span class="cs">'0 6px 16px -2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.10), 0 16px 40px 6px rgba(0,0,0,.07)'</span>, <span class="cc">// shadow.LG</span>
+    <span class="ck">boxShadowTertiary</span>:      <span class="cs">'0 1px 2px rgba(0,0,0,.04), 0 1px 6px -1px rgba(0,0,0,.03), 0 2px 4px rgba(0,0,0,.03)'</span>,         <span class="cc">// shadow.SM</span>
+
+    <span class="cc">// ── Component Heights ─────────────────────────────</span>
+    <span class="ck">controlHeight</span>:          <span class="cv">32</span>,         <span class="cc">// height.MD ★ (button, input, select default)</span>
+    <span class="ck">controlHeightXS</span>:        <span class="cv">24</span>,         <span class="cc">// height.XS</span>
+    <span class="ck">controlHeightSM</span>:        <span class="cv">28</span>,         <span class="cc">// height.SM</span>
+    <span class="ck">controlHeightLG</span>:        <span class="cv">40</span>,         <span class="cc">// height.LG</span>
+
+    <span class="cc">// ── Motion ────────────────────────────────────────</span>
+    <span class="ck">motionDurationFast</span>:     <span class="cs">'0.1s'</span>,
+    <span class="ck">motionDurationMid</span>:      <span class="cs">'0.2s'</span>,
+    <span class="ck">motionDurationSlow</span>:     <span class="cs">'0.3s'</span>,
+    <span class="ck">motionEaseInOut</span>:        <span class="cs">'cubic-bezier(0.645, 0.045, 0.355, 1)'</span>,
+    <span class="ck">motionEaseOut</span>:          <span class="cs">'cubic-bezier(0.215, 0.61, 0.355, 1)'</span>,
+  },
+
+  <span class="cc">// ─────────────────────────────────────────────────</span>
+  <span class="cc">// Component-level token overrides</span>
+  <span class="cc">// ─────────────────────────────────────────────────</span>
+  <span class="ck">components</span>: {
+
+    <span class="cc">// ── Button ────────────────────────────────────────</span>
+    <span class="ck">Button</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,           <span class="cc">// radius.MD</span>
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,          <span class="cc">// height.MD ★</span>
+      <span class="ck">controlHeightSM</span>:      <span class="cv">28</span>,          <span class="cc">// height.SM</span>
+      <span class="ck">controlHeightLG</span>:      <span class="cv">40</span>,          <span class="cc">// height.LG</span>
+      <span class="ck">fontWeight</span>:           <span class="cv">600</span>,         <span class="cc">// font.weight.semibold</span>
+      <span class="ck">paddingContentHorizontal</span>: <span class="cv">16</span>,      <span class="cc">// space.padding.MD</span>
+      <span class="ck">primaryShadow</span>:        <span class="cs">'none'</span>,      <span class="cc">// flat design</span>
+      <span class="ck">defaultShadow</span>:        <span class="cs">'none'</span>,
+      <span class="ck">dangerShadow</span>:         <span class="cs">'none'</span>,
+    },
+
+    <span class="cc">// ── Input ─────────────────────────────────────────</span>
+    <span class="ck">Input</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,           <span class="cc">// radius.MD</span>
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,          <span class="cc">// height.MD ★</span>
+      <span class="ck">controlHeightSM</span>:      <span class="cv">28</span>,
+      <span class="ck">controlHeightLG</span>:      <span class="cv">40</span>,
+      <span class="ck">hoverBorderColor</span>:     <span class="cs">'#531dab'</span>,   <span class="cc">// color.primary.text</span>
+      <span class="ck">activeBorderColor</span>:    <span class="cs">'#531dab'</span>,
+      <span class="ck">activeShadow</span>:         <span class="cs">'0 0 0 2px rgba(83,29,171,.1)'</span>,
+      <span class="ck">errorActiveShadow</span>:    <span class="cs">'0 0 0 2px rgba(255,77,79,.1)'</span>,
+      <span class="ck">warningActiveShadow</span>:  <span class="cs">'0 0 0 2px rgba(255,169,64,.1)'</span>,
+      <span class="ck">addonBg</span>:              <span class="cs">'#fafafa'</span>,
+    },
+
+    <span class="cc">// ── Select ────────────────────────────────────────</span>
+    <span class="ck">Select</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,
+      <span class="ck">controlHeightSM</span>:      <span class="cv">28</span>,
+      <span class="ck">controlHeightLG</span>:      <span class="cv">40</span>,
+      <span class="ck">optionHeight</span>:         <span class="cv">32</span>,
+      <span class="ck">optionSelectedFontWeight</span>: <span class="cv">600</span>,
+      <span class="ck">multipleItemHeight</span>:   <span class="cv">24</span>,          <span class="cc">// height.XS</span>
+    },
+
+    <span class="cc">// ── DatePicker ────────────────────────────────────</span>
+    <span class="ck">DatePicker</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,
+      <span class="ck">hoverBorderColor</span>:     <span class="cs">'#531dab'</span>,
+      <span class="ck">activeBorderColor</span>:    <span class="cs">'#531dab'</span>,
+      <span class="ck">activeShadow</span>:         <span class="cs">'0 0 0 2px rgba(83,29,171,.1)'</span>,
+      <span class="ck">cellHoverBg</span>:          <span class="cs">'#f9f0ff'</span>,   <span class="cc">// color.primary.bg</span>
+      <span class="ck">cellActiveWithRangeBg</span>: <span class="cs">'#f9f0ff'</span>,
+    },
+
+    <span class="cc">// ── Checkbox ──────────────────────────────────────</span>
+    <span class="ck">Checkbox</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">4</span>,           <span class="cc">// radius.SM</span>
+      <span class="ck">controlInteractiveSize</span>: <span class="cv">16</span>,
+    },
+
+    <span class="cc">// ── Radio ─────────────────────────────────────────</span>
+    <span class="ck">Radio</span>: {
+      <span class="ck">radioSize</span>:            <span class="cv">16</span>,
+      <span class="ck">buttonSolidCheckedBg</span>:  <span class="cs">'#531dab'</span>,
+      <span class="ck">buttonSolidCheckedHoverBg</span>: <span class="cs">'#722ed1'</span>,
+      <span class="ck">buttonPaddingInline</span>:  <span class="cv">16</span>,
+    },
+
+    <span class="cc">// ── Slider ────────────────────────────────────────</span>
+    <span class="ck">Slider</span>: {
+      <span class="ck">trackBg</span>:              <span class="cs">'#531dab'</span>,
+      <span class="ck">trackHoverBg</span>:         <span class="cs">'#722ed1'</span>,
+      <span class="ck">handleColor</span>:          <span class="cs">'#531dab'</span>,
+      <span class="ck">railSize</span>:             <span class="cv">4</span>,
+    },
+
+    <span class="cc">// ── Table ─────────────────────────────────────────</span>
+    <span class="ck">Table</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">8</span>,
+      <span class="ck">headerBg</span>:             <span class="cs">'#fafafa'</span>,
+      <span class="ck">rowHoverBg</span>:           <span class="cs">'#fafafa'</span>,
+      <span class="ck">rowSelectedBg</span>:        <span class="cs">'#f9f0ff'</span>,   <span class="cc">// color.primary.bg</span>
+      <span class="ck">rowSelectedHoverBg</span>:   <span class="cs">'#efdbff'</span>,
+      <span class="ck">cellPaddingBlock</span>:     <span class="cv">12</span>,          <span class="cc">// space.padding.SM</span>
+      <span class="ck">cellPaddingInline</span>:    <span class="cv">16</span>,          <span class="cc">// space.padding.MD</span>
+    },
+
+    <span class="cc">// ── Tabs ──────────────────────────────────────────</span>
+    <span class="ck">Tabs</span>: {
+      <span class="ck">inkBarColor</span>:          <span class="cs">'#531dab'</span>,
+      <span class="ck">itemActiveColor</span>:      <span class="cs">'#531dab'</span>,
+      <span class="ck">itemHoverColor</span>:       <span class="cs">'#531dab'</span>,
+      <span class="ck">cardHeight</span>:           <span class="cv">40</span>,
+    },
+
+    <span class="cc">// ── Menu ──────────────────────────────────────────</span>
+    <span class="ck">Menu</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">itemBorderRadius</span>:     <span class="cv">6</span>,
+      <span class="ck">itemHeight</span>:           <span class="cv">40</span>,
+      <span class="ck">iconSize</span>:             <span class="cv">16</span>,
+      <span class="ck">iconMarginInlineEnd</span>:  <span class="cv">10</span>,
+    },
+
+    <span class="cc">// ── Card ──────────────────────────────────────────</span>
+    <span class="ck">Card</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">8</span>,
+      <span class="ck">headerHeight</span>:         <span class="cv">56</span>,
+      <span class="ck">headerFontSize</span>:       <span class="cv">16</span>,
+      <span class="ck">paddingLG</span>:            <span class="cv">24</span>,
+    },
+
+    <span class="cc">// ── Modal ─────────────────────────────────────────</span>
+    <span class="ck">Modal</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">12</span>,          <span class="cc">// radius.2XL</span>
+    },
+
+    <span class="cc">// ── Notification ──────────────────────────────────</span>
+    <span class="ck">Notification</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">8</span>,
+      <span class="ck">width</span>:                <span class="cv">384</span>,
+    },
+
+    <span class="cc">// ── Alert ─────────────────────────────────────────</span>
+    <span class="ck">Alert</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">8</span>,
+    },
+
+    <span class="cc">// ── Progress ──────────────────────────────────────</span>
+    <span class="ck">Progress</span>: {
+      <span class="ck">defaultColor</span>:         <span class="cs">'#531dab'</span>,
+      <span class="ck">lineBorderRadius</span>:     <span class="cv">100</span>,
+    },
+
+    <span class="cc">// ── Tag ───────────────────────────────────────────</span>
+    <span class="ck">Tag</span>: {
+      <span class="ck">borderRadiusSM</span>:       <span class="cv">4</span>,
+      <span class="ck">defaultBg</span>:            <span class="cs">'#fafafa'</span>,
+    },
+
+    <span class="cc">// ── Avatar ────────────────────────────────────────</span>
+    <span class="ck">Avatar</span>: {
+      <span class="ck">containerSize</span>:        <span class="cv">32</span>,
+      <span class="ck">containerSizeLG</span>:      <span class="cv">40</span>,
+      <span class="ck">containerSizeSM</span>:      <span class="cv">24</span>,
+    },
+
+    <span class="cc">// ── Tooltip ───────────────────────────────────────</span>
+    <span class="ck">Tooltip</span>: {
+      <span class="ck">colorBgDefault</span>:       <span class="cs">'#262626'</span>,
+    },
+
+    <span class="cc">// ── Tree ──────────────────────────────────────────</span>
+    <span class="ck">Tree</span>: {
+      <span class="ck">titleHeight</span>:          <span class="cv">28</span>,
+      <span class="ck">nodeHoverBg</span>:          <span class="cs">'#f9f0ff'</span>,
+      <span class="ck">nodeSelectedBg</span>:       <span class="cs">'#f9f0ff'</span>,
+      <span class="ck">directoryNodeSelectedBg</span>: <span class="cs">'#531dab'</span>,
+    },
+
+    <span class="cc">// ── Dropdown ──────────────────────────────────────</span>
+    <span class="ck">Dropdown</span>: {
+      <span class="ck">controlItemBgHover</span>:   <span class="cs">'#f9f0ff'</span>,
+    },
+
+    <span class="cc">// ── Segmented ─────────────────────────────────────</span>
+    <span class="ck">Segmented</span>: {
+      <span class="ck">itemSelectedColor</span>:    <span class="cs">'#531dab'</span>,
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">borderRadiusSM</span>:       <span class="cv">4</span>,
+    },
+
+    <span class="cc">// ── Pagination ────────────────────────────────────</span>
+    <span class="ck">Pagination</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">itemSize</span>:             <span class="cv">32</span>,
+      <span class="ck">itemSizeSM</span>:           <span class="cv">24</span>,
+    },
+
+    <span class="cc">// ── Collapse ──────────────────────────────────────</span>
+    <span class="ck">Collapse</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">8</span>,
+      <span class="ck">headerBg</span>:             <span class="cs">'#fafafa'</span>,
+    },
+
+    <span class="cc">// ── Form ──────────────────────────────────────────</span>
+    <span class="ck">Form</span>: {
+      <span class="ck">itemMarginBottom</span>:     <span class="cv">24</span>,
+      <span class="ck">labelFontSize</span>:        <span class="cv">14</span>,
+    },
+
+    <span class="cc">// ── Layout ────────────────────────────────────────</span>
+    <span class="ck">Layout</span>: {
+      <span class="ck">headerBg</span>:             <span class="cs">'#ffffff'</span>,
+      <span class="ck">headerHeight</span>:         <span class="cv">64</span>,
+      <span class="ck">siderBg</span>:              <span class="cs">'#ffffff'</span>,
+      <span class="ck">bodyBg</span>:               <span class="cs">'#fafafa'</span>,
+    },
+
+    <span class="cc">// ── Typography ────────────────────────────────────</span>
+    <span class="ck">Typography</span>: {
+      <span class="ck">fontSizeHeading1</span>:     <span class="cv">38</span>,
+      <span class="ck">fontSizeHeading2</span>:     <span class="cv">30</span>,
+      <span class="ck">fontSizeHeading3</span>:     <span class="cv">24</span>,
+      <span class="ck">fontSizeHeading4</span>:     <span class="cv">20</span>,
+      <span class="ck">fontSizeHeading5</span>:     <span class="cv">16</span>,
+    },
+  },
+};
+
+<span class="cf">export default</span> theme;</pre>
+  </div>
+</section>
+
+<!-- ══════════ v5 ConfigProvider ══════════ -->
+<section class="section" id="v5-provider">
+  <div class="section-header">
+    <div class="section-eyebrow">AntD v5 · Usage</div>
+    <div class="section-title">ConfigProvider Setup</div>
+    <div class="section-desc">Wrap your app root with ConfigProvider to apply the theme globally.</div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-v5">AntD v5</span>
+      <span class="code-badge cb-ts">TSX</span>
+      <span class="code-badge cb-file">App.tsx</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="ci">import</span> { <span class="ct">ConfigProvider</span> } <span class="ci">from</span> <span class="cs">'antd'</span>;
+<span class="ci">import</span> theme <span class="ci">from</span> <span class="cs">'./theme/tokens.v5'</span>;
+
+<span class="cc">// Font imports (npm install @fontsource/inter)</span>
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/300.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/400.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/500.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/600.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/700.css'</span>;
+
+<span class="cf">export default function</span> <span class="cm">App</span>() {
+  <span class="cf">return</span> (
+    &lt;<span class="ct">ConfigProvider</span> theme={theme}&gt;
+      {<span class="cc">/* your app */</span>}
+    &lt;/<span class="ct">ConfigProvider</span>&gt;
+  );
+}</pre>
+  </div>
+
+  <div class="callout callout-tip">
+    <div class="callout-title">✦ Opt-in CSS Variables in v5</div>
+    To enable CSS variables mode in v5, add <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;">cssVar: true</code> inside your <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;">theme</code> object. This outputs <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;">--ant-*</code> CSS custom properties onto <code style="background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px;font-family:var(--mono);font-size:11px;">:root</code>.
+  </div>
+</section>
+
+<!-- ══════════ v6 SEED TOKENS ══════════ -->
+<section class="section" id="v6-seed">
+  <div class="section-header">
+    <div class="section-eyebrow">AntD v6 · Seed Tokens</div>
+    <div class="section-title">theme/tokens.v6.ts</div>
+    <div class="section-desc">v6 uses CSS Variables by default. The token structure is the same but the runtime is pure CSS — no cssinjs overhead.</div>
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-title">ℹ v6 CSS Variables Mode</div>
+    In v6, all <code style="font-family:var(--mono);font-size:11px;">token</code> values are automatically emitted as <code style="font-family:var(--mono);font-size:11px;">--ant-*</code> CSS variables. You can also add <code style="font-family:var(--mono);font-size:11px;">zeroRuntime: true</code> for fully static extraction with zero JS overhead.
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-v6">AntD v6</span>
+      <span class="code-badge cb-ts">TypeScript</span>
+      <span class="code-badge cb-file">theme/tokens.v6.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="ci">import type</span> { <span class="ct">ThemeConfig</span> } <span class="ci">from</span> <span class="cs">'antd'</span>;
+
+<span class="cc">// ─────────────────────────────────────────────────────</span>
+<span class="cc">// AntD v6 Theme Config — Design System Token Mapping</span>
+<span class="cc">// CSS Variables mode is ON by default in v6.</span>
+<span class="cc">// All token values become --ant-* CSS custom properties.</span>
+<span class="cc">// ─────────────────────────────────────────────────────</span>
+
+<span class="cf">const</span> <span class="ct">theme</span>: <span class="ct">ThemeConfig</span> = {
+
+  <span class="cc">// Enable CSS Variables mode (default in v6, explicit here for clarity)</span>
+  <span class="ck">cssVar</span>: <span class="cf">true</span>,
+
+  <span class="cc">// Optional: enable zero-runtime static extraction for best performance</span>
+  <span class="cc">// zeroRuntime: true,</span>
+
+  <span class="ck">token</span>: {
+
+    <span class="cc">// ── Color: Brand ──────────────────────────────────</span>
+    <span class="ck">colorPrimary</span>:           <span class="cs">'#531dab'</span>,  <span class="cc">// purple-7 · brand seed</span>
+    <span class="ck">colorSuccess</span>:           <span class="cs">'#52c41a'</span>,  <span class="cc">// green-6  · success seed</span>
+    <span class="ck">colorWarning</span>:           <span class="cs">'#ffa940'</span>,  <span class="cc">// orange-5 · warning seed</span>
+    <span class="ck">colorError</span>:             <span class="cs">'#ff4d4f'</span>,  <span class="cc">// red-5    · error seed</span>
+    <span class="ck">colorInfo</span>:              <span class="cs">'#1677ff'</span>,  <span class="cc">// blue-6   · info seed</span>
+
+    <span class="cc">// ── Color: Text ───────────────────────────────────</span>
+    <span class="ck">colorText</span>:              <span class="cs">'#262626'</span>,
+    <span class="ck">colorTextSecondary</span>:     <span class="cs">'#737373'</span>,
+    <span class="ck">colorTextTertiary</span>:      <span class="cs">'#bfbfbf'</span>,
+    <span class="ck">colorTextDisabled</span>:      <span class="cs">'#d9d9d9'</span>,
+
+    <span class="cc">// ── Color: Background ─────────────────────────────</span>
+    <span class="ck">colorBgBase</span>:            <span class="cs">'#ffffff'</span>,
+    <span class="ck">colorBgLayout</span>:          <span class="cs">'#fafafa'</span>,
+    <span class="ck">colorBgContainer</span>:       <span class="cs">'#ffffff'</span>,
+    <span class="ck">colorBgElevated</span>:        <span class="cs">'#ffffff'</span>,
+
+    <span class="cc">// ── Color: Border ─────────────────────────────────</span>
+    <span class="ck">colorBorder</span>:            <span class="cs">'#d9d9d9'</span>,
+    <span class="ck">colorBorderSecondary</span>:   <span class="cs">'#f0f0f0'</span>,
+
+    <span class="cc">// ── Typography ────────────────────────────────────</span>
+    <span class="ck">fontFamily</span>:             <span class="cs">"'Inter', sans-serif"</span>,
+    <span class="ck">fontFamilyCode</span>:         <span class="cs">"'IBM Plex Mono', monospace"</span>,
+    <span class="ck">fontSize</span>:               <span class="cv">14</span>,
+    <span class="ck">fontSizeSM</span>:             <span class="cv">12</span>,
+    <span class="ck">fontSizeLG</span>:             <span class="cv">16</span>,
+    <span class="ck">fontSizeXL</span>:             <span class="cv">20</span>,
+    <span class="ck">fontSizeHeading1</span>:       <span class="cv">38</span>,
+    <span class="ck">fontSizeHeading2</span>:       <span class="cv">30</span>,
+    <span class="ck">fontSizeHeading3</span>:       <span class="cv">24</span>,
+    <span class="ck">fontSizeHeading4</span>:       <span class="cv">20</span>,
+    <span class="ck">fontSizeHeading5</span>:       <span class="cv">16</span>,
+    <span class="ck">fontWeightStrong</span>:       <span class="cv">600</span>,
+
+    <span class="cc">// ── Spacing / Grid ────────────────────────────────</span>
+    <span class="ck">sizeUnit</span>:               <span class="cv">4</span>,
+    <span class="ck">sizeStep</span>:               <span class="cv">4</span>,
+    <span class="ck">sizeXS</span>:                 <span class="cv">8</span>,
+    <span class="ck">sizeSM</span>:                 <span class="cv">12</span>,
+    <span class="ck">sizeMD</span>:                 <span class="cv">16</span>,
+    <span class="ck">sizeLG</span>:                 <span class="cv">20</span>,
+    <span class="ck">sizeXL</span>:                 <span class="cv">24</span>,
+    <span class="ck">sizeXXL</span>:                <span class="cv">32</span>,
+
+    <span class="cc">// ── Border Radius ─────────────────────────────────</span>
+    <span class="ck">borderRadius</span>:           <span class="cv">6</span>,
+    <span class="ck">borderRadiusXS</span>:         <span class="cv">2</span>,
+    <span class="ck">borderRadiusSM</span>:         <span class="cv">4</span>,
+    <span class="ck">borderRadiusLG</span>:         <span class="cv">8</span>,
+    <span class="ck">borderRadiusOuter</span>:      <span class="cv">8</span>,
+
+    <span class="cc">// ── Shadow / Elevation ────────────────────────────</span>
+    <span class="ck">boxShadow</span>:              <span class="cs">'0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05)'</span>,
+    <span class="ck">boxShadowSecondary</span>:     <span class="cs">'0 6px 16px -2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.10), 0 16px 40px 6px rgba(0,0,0,.07)'</span>,
+    <span class="ck">boxShadowTertiary</span>:      <span class="cs">'0 1px 2px rgba(0,0,0,.04), 0 1px 6px -1px rgba(0,0,0,.03), 0 2px 4px rgba(0,0,0,.03)'</span>,
+
+    <span class="cc">// ── Component Heights ─────────────────────────────</span>
+    <span class="ck">controlHeight</span>:          <span class="cv">32</span>,
+    <span class="ck">controlHeightXS</span>:        <span class="cv">24</span>,
+    <span class="ck">controlHeightSM</span>:        <span class="cv">28</span>,
+    <span class="ck">controlHeightLG</span>:        <span class="cv">40</span>,
+    <span class="ck">controlHeightXL</span>:        <span class="cv">48</span>,          <span class="cc">// ✦ new in v6</span>
+
+    <span class="cc">// ── Motion ────────────────────────────────────────</span>
+    <span class="ck">motionDurationFast</span>:     <span class="cs">'0.1s'</span>,
+    <span class="ck">motionDurationMid</span>:      <span class="cs">'0.2s'</span>,
+    <span class="ck">motionDurationSlow</span>:     <span class="cs">'0.3s'</span>,
+  },
+
+  <span class="ck">components</span>: {
+
+    <span class="cc">// ── Button ────────────────────────────────────────</span>
+    <span class="ck">Button</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,
+      <span class="ck">controlHeightSM</span>:      <span class="cv">28</span>,
+      <span class="ck">controlHeightLG</span>:      <span class="cv">40</span>,
+      <span class="ck">controlHeightXL</span>:      <span class="cv">48</span>,          <span class="cc">// ✦ v6 only</span>
+      <span class="ck">fontWeight</span>:           <span class="cv">600</span>,
+      <span class="ck">paddingContentHorizontal</span>: <span class="cv">16</span>,
+      <span class="ck">primaryShadow</span>:        <span class="cs">'none'</span>,
+      <span class="ck">defaultShadow</span>:        <span class="cs">'none'</span>,
+      <span class="ck">dangerShadow</span>:         <span class="cs">'none'</span>,
+    },
+
+    <span class="cc">// ── Input ─────────────────────────────────────────</span>
+    <span class="ck">Input</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,
+      <span class="ck">controlHeightSM</span>:      <span class="cv">28</span>,
+      <span class="ck">controlHeightLG</span>:      <span class="cv">40</span>,
+      <span class="ck">hoverBorderColor</span>:     <span class="cs">'#531dab'</span>,
+      <span class="ck">activeBorderColor</span>:    <span class="cs">'#531dab'</span>,
+      <span class="ck">activeShadow</span>:         <span class="cs">'0 0 0 2px rgba(83,29,171,.1)'</span>,
+      <span class="ck">errorActiveShadow</span>:    <span class="cs">'0 0 0 2px rgba(255,77,79,.1)'</span>,
+      <span class="ck">warningActiveShadow</span>:  <span class="cs">'0 0 0 2px rgba(255,169,64,.1)'</span>,
+      <span class="ck">addonBg</span>:              <span class="cs">'#fafafa'</span>,
+    },
+
+    <span class="cc">// ── Select ────────────────────────────────────────</span>
+    <span class="ck">Select</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,
+      <span class="ck">optionHeight</span>:         <span class="cv">32</span>,
+      <span class="ck">optionSelectedFontWeight</span>: <span class="cv">600</span>,
+      <span class="ck">multipleItemHeight</span>:   <span class="cv">24</span>,
+    },
+
+    <span class="cc">// ── DatePicker ────────────────────────────────────</span>
+    <span class="ck">DatePicker</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">controlHeight</span>:        <span class="cv">32</span>,
+      <span class="ck">hoverBorderColor</span>:     <span class="cs">'#531dab'</span>,
+      <span class="ck">activeBorderColor</span>:    <span class="cs">'#531dab'</span>,
+      <span class="ck">activeShadow</span>:         <span class="cs">'0 0 0 2px rgba(83,29,171,.1)'</span>,
+      <span class="ck">cellHoverBg</span>:          <span class="cs">'#f9f0ff'</span>,
+    },
+
+    <span class="cc">// ── Checkbox ──────────────────────────────────────</span>
+    <span class="ck">Checkbox</span>: { <span class="ck">borderRadius</span>: <span class="cv">4</span>, <span class="ck">controlInteractiveSize</span>: <span class="cv">16</span> },
+
+    <span class="cc">// ── Radio ─────────────────────────────────────────</span>
+    <span class="ck">Radio</span>: {
+      <span class="ck">radioSize</span>:            <span class="cv">16</span>,
+      <span class="ck">buttonSolidCheckedBg</span>: <span class="cs">'#531dab'</span>,
+      <span class="ck">buttonSolidCheckedHoverBg</span>: <span class="cs">'#722ed1'</span>,
+      <span class="ck">buttonPaddingInline</span>:  <span class="cv">16</span>,
+    },
+
+    <span class="cc">// ── Slider ────────────────────────────────────────</span>
+    <span class="ck">Slider</span>: {
+      <span class="ck">trackBg</span>:              <span class="cs">'#531dab'</span>,
+      <span class="ck">trackHoverBg</span>:         <span class="cs">'#722ed1'</span>,
+      <span class="ck">handleColor</span>:          <span class="cs">'#531dab'</span>,
+      <span class="ck">railSize</span>:             <span class="cv">4</span>,
+    },
+
+    <span class="cc">// ── Table ─────────────────────────────────────────</span>
+    <span class="ck">Table</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">8</span>,
+      <span class="ck">headerBg</span>:             <span class="cs">'#fafafa'</span>,
+      <span class="ck">rowHoverBg</span>:           <span class="cs">'#fafafa'</span>,
+      <span class="ck">rowSelectedBg</span>:        <span class="cs">'#f9f0ff'</span>,
+      <span class="ck">rowSelectedHoverBg</span>:   <span class="cs">'#efdbff'</span>,
+      <span class="ck">cellPaddingBlock</span>:     <span class="cv">12</span>,
+      <span class="ck">cellPaddingInline</span>:    <span class="cv">16</span>,
+    },
+
+    <span class="cc">// ── Tabs ──────────────────────────────────────────</span>
+    <span class="ck">Tabs</span>: {
+      <span class="ck">inkBarColor</span>:          <span class="cs">'#531dab'</span>,
+      <span class="ck">itemActiveColor</span>:      <span class="cs">'#531dab'</span>,
+      <span class="ck">itemHoverColor</span>:       <span class="cs">'#531dab'</span>,
+      <span class="ck">cardHeight</span>:           <span class="cv">40</span>,
+    },
+
+    <span class="cc">// ── Menu ──────────────────────────────────────────</span>
+    <span class="ck">Menu</span>: {
+      <span class="ck">borderRadius</span>:         <span class="cv">6</span>,
+      <span class="ck">itemBorderRadius</span>:     <span class="cv">6</span>,
+      <span class="ck">itemHeight</span>:           <span class="cv">40</span>,
+      <span class="ck">iconSize</span>:             <span class="cv">16</span>,
+    },
+
+    <span class="cc">// ── Card ──────────────────────────────────────────</span>
+    <span class="ck">Card</span>: {
+      <span class="ck">borderRadiusLG</span>:       <span class="cv">8</span>,
+      <span class="ck">headerHeight</span>:         <span class="cv">56</span>,
+      <span class="ck">headerFontSize</span>:       <span class="cv">16</span>,
+      <span class="ck">paddingLG</span>:            <span class="cv">24</span>,
+    },
+
+    <span class="cc">// ── Modal ─────────────────────────────────────────</span>
+    <span class="ck">Modal</span>: { <span class="ck">borderRadiusLG</span>: <span class="cv">12</span> },
+
+    <span class="cc">// ── Notification ──────────────────────────────────</span>
+    <span class="ck">Notification</span>: { <span class="ck">borderRadiusLG</span>: <span class="cv">8</span>, <span class="ck">width</span>: <span class="cv">384</span> },
+
+    <span class="cc">// ── Alert ─────────────────────────────────────────</span>
+    <span class="ck">Alert</span>: { <span class="ck">borderRadius</span>: <span class="cv">8</span> },
+
+    <span class="cc">// ── Progress ──────────────────────────────────────</span>
+    <span class="ck">Progress</span>: { <span class="ck">defaultColor</span>: <span class="cs">'#531dab'</span>, <span class="ck">lineBorderRadius</span>: <span class="cv">100</span> },
+
+    <span class="cc">// ── Tag ───────────────────────────────────────────</span>
+    <span class="ck">Tag</span>: { <span class="ck">borderRadiusSM</span>: <span class="cv">4</span>, <span class="ck">defaultBg</span>: <span class="cs">'#fafafa'</span> },
+
+    <span class="cc">// ── Avatar ────────────────────────────────────────</span>
+    <span class="ck">Avatar</span>: { <span class="ck">containerSize</span>: <span class="cv">32</span>, <span class="ck">containerSizeLG</span>: <span class="cv">40</span>, <span class="ck">containerSizeSM</span>: <span class="cv">24</span> },
+
+    <span class="cc">// ── Tooltip ───────────────────────────────────────</span>
+    <span class="ck">Tooltip</span>: { <span class="ck">colorBgDefault</span>: <span class="cs">'#262626'</span> },
+
+    <span class="cc">// ── Tree ──────────────────────────────────────────</span>
+    <span class="ck">Tree</span>: {
+      <span class="ck">titleHeight</span>:          <span class="cv">28</span>,
+      <span class="ck">nodeHoverBg</span>:          <span class="cs">'#f9f0ff'</span>,
+      <span class="ck">directoryNodeSelectedBg</span>: <span class="cs">'#531dab'</span>,
+    },
+
+    <span class="cc">// ── Dropdown ──────────────────────────────────────</span>
+    <span class="ck">Dropdown</span>: { <span class="ck">controlItemBgHover</span>: <span class="cs">'#f9f0ff'</span> },
+
+    <span class="cc">// ── Segmented ─────────────────────────────────────</span>
+    <span class="ck">Segmented</span>: { <span class="ck">itemSelectedColor</span>: <span class="cs">'#531dab'</span>, <span class="ck">borderRadius</span>: <span class="cv">6</span> },
+
+    <span class="cc">// ── Pagination ────────────────────────────────────</span>
+    <span class="ck">Pagination</span>: { <span class="ck">borderRadius</span>: <span class="cv">6</span>, <span class="ck">itemSize</span>: <span class="cv">32</span>, <span class="ck">itemSizeSM</span>: <span class="cv">24</span> },
+
+    <span class="cc">// ── Collapse ──────────────────────────────────────</span>
+    <span class="ck">Collapse</span>: { <span class="ck">borderRadiusLG</span>: <span class="cv">8</span>, <span class="ck">headerBg</span>: <span class="cs">'#fafafa'</span> },
+
+    <span class="cc">// ── Form ──────────────────────────────────────────</span>
+    <span class="ck">Form</span>: { <span class="ck">itemMarginBottom</span>: <span class="cv">24</span>, <span class="ck">labelFontSize</span>: <span class="cv">14</span> },
+
+    <span class="cc">// ── Layout ────────────────────────────────────────</span>
+    <span class="ck">Layout</span>: {
+      <span class="ck">headerBg</span>:             <span class="cs">'#ffffff'</span>,
+      <span class="ck">headerHeight</span>:         <span class="cv">64</span>,
+      <span class="ck">siderBg</span>:              <span class="cs">'#ffffff'</span>,
+      <span class="ck">bodyBg</span>:               <span class="cs">'#fafafa'</span>,
+    },
+  },
+};
+
+<span class="cf">export default</span> theme;</pre>
+  </div>
+</section>
+
+<!-- ══════════ v6 CSS VARIABLES ══════════ -->
+<section class="section" id="v6-css">
+  <div class="section-header">
+    <div class="section-eyebrow">AntD v6 · CSS Variables</div>
+    <div class="section-title">globals.css — AI Tokens + Custom Vars</div>
+    <div class="section-desc">In v6, add your custom design tokens alongside AntD's auto-generated <code style="font-family:var(--mono);font-size:11px;background:var(--surface-2);padding:1px 5px;border-radius:3px;">--ant-*</code> vars in your global CSS file.</div>
+  </div>
+
+  <div class="code-wrap" id="ai-tokens">
+    <div class="code-label">
+      <span class="code-badge cb-v6">AntD v6</span>
+      <span class="code-badge cb-file">globals.css</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="cc">/* ─────────────────────────────────────────────────────
+   globals.css — Custom Design Tokens (AntD v6)
+   These live alongside --ant-* variables on :root
+   ───────────────────────────────────────────────────── */</span>
+
+<span class="ct">:root</span> {
+
+  <span class="cc">/* ── AI Gradient Primitive Stops ──────────────────── */</span>
+  <span class="ck">--ai-pink</span>:             <span class="cs">#FFF0F6</span>;   <span class="cc">/* magenta-1 · text/icon gradient start */</span>
+  <span class="ck">--ai-blue</span>:             <span class="cs">#F0F5FF</span>;   <span class="cc">/* geekblue-1 · text/icon gradient end  */</span>
+  <span class="ck">--ai-pink-light</span>:       <span class="cs">#FFF0F6</span>;   <span class="cc">/* magenta-1 · BG gradient start        */</span>
+  <span class="ck">--ai-blue-light</span>:       <span class="cs">#F0F5FF</span>;   <span class="cc">/* geekblue-1 · BG gradient end         */</span>
+  <span class="ck">--ai-pink-mid</span>:         <span class="cs">#FFD6E7</span>;   <span class="cc">/* magenta-2 · border gradient start    */</span>
+  <span class="ck">--ai-blue-mid</span>:         <span class="cs">#D6E4FF</span>;   <span class="cc">/* geekblue-2 · border gradient end     */</span>
+
+  <span class="cc">/* ── AI Gradient Semantic Tokens ──────────────────── */</span>
+  <span class="ck">--ai-theme-text</span>:       <span class="cs">linear-gradient(93.94deg, var(--ai-pink) 0%, var(--ai-blue) 100%)</span>;
+  <span class="ck">--ai-theme-background</span>: <span class="cs">linear-gradient(64.05deg, var(--ai-pink-light) 32.12%, var(--ai-blue-light) 67.27%)</span>;
+  <span class="ck">--ai-theme-icon</span>:       <span class="cs">linear-gradient(93.94deg, var(--ai-pink) 0%, var(--ai-blue) 100%)</span>;
+  <span class="ck">--ai-theme-border</span>:     <span class="cs">linear-gradient(64.05deg, var(--ai-pink-mid) 32.12%, var(--ai-blue-mid) 67.27%)</span>;
+
+  <span class="cc">/* ── Design System Scale Aliases ──────────────────── */</span>
+  <span class="ck">--color-primary</span>:       <span class="cs">#531dab</span>;
+  <span class="ck">--color-primary-bg</span>:    <span class="cs">#f9f0ff</span>;
+  <span class="ck">--color-primary-hover</span>: <span class="cs">#722ed1</span>;
+  <span class="ck">--font-sans</span>:           <span class="cs">'Inter', sans-serif</span>;
+  <span class="ck">--font-mono</span>:           <span class="cs">'IBM Plex Mono', monospace</span>;
+  <span class="ck">--radius-md</span>:           <span class="cs">6px</span>;
+  <span class="ck">--height-md</span>:           <span class="cs">32px</span>;
+}</pre>
+  </div>
+
+  <!-- v6 useToken hook -->
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-v6">AntD v6</span>
+      <span class="code-badge cb-ts">TypeScript</span>
+      <span class="code-badge cb-file">hooks/useAIToken.ts</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="ci">import</span> { <span class="ct">theme</span> } <span class="ci">from</span> <span class="cs">'antd'</span>;
+
+<span class="cc">// AI token primitive values</span>
+<span class="cf">export const</span> <span class="ct">AI_TOKEN_VALUES</span> = {
+  <span class="ck">pink</span>:        <span class="cs">'#FFF0F6'</span>,  <span class="cc">// magenta-1</span>
+  <span class="ck">blue</span>:        <span class="cs">'#F0F5FF'</span>,  <span class="cc">// geekblue-1</span>
+  <span class="ck">pinkLight</span>:   <span class="cs">'#FFF0F6'</span>,  <span class="cc">// magenta-1</span>
+  <span class="ck">blueLight</span>:   <span class="cs">'#F0F5FF'</span>,  <span class="cc">// geekblue-1</span>
+  <span class="ck">pinkMid</span>:     <span class="cs">'#FFD6E7'</span>,  <span class="cc">// magenta-2</span>
+  <span class="ck">blueMid</span>:     <span class="cs">'#D6E4FF'</span>,  <span class="cc">// geekblue-2</span>
+} <span class="cf">as const</span>;
+
+<span class="cc">// CSS variable names for use in JS</span>
+<span class="cf">export const</span> <span class="ct">AI_CSS_VARS</span> = {
+  <span class="ck">text</span>:        <span class="cs">'var(--ai-theme-text)'</span>,
+  <span class="ck">background</span>:  <span class="cs">'var(--ai-theme-background)'</span>,
+  <span class="ck">icon</span>:        <span class="cs">'var(--ai-theme-icon)'</span>,
+  <span class="ck">border</span>:      <span class="cs">'var(--ai-theme-border)'</span>,
+} <span class="cf">as const</span>;
+
+<span class="cc">// Combined hook — returns AntD token + cssVar map + AI tokens</span>
+<span class="cf">export const</span> <span class="cm">useAIToken</span> = () => {
+  <span class="cc">// v6: useToken returns { token, cssVar } where cssVar gives --ant-* names</span>
+  <span class="cf">const</span> { <span class="ck">token</span>, <span class="ck">cssVar</span> } = <span class="cm">theme.useToken</span>();
+  <span class="cf">return</span> {
+    ...token,
+    <span class="ck">antdCssVar</span>: cssVar,
+    <span class="ck">ai</span>:         <span class="ct">AI_TOKEN_VALUES</span>,
+    <span class="ck">aiCssVar</span>:   <span class="ct">AI_CSS_VARS</span>,
+  };
+};</pre>
+  </div>
+</section>
+
+<!-- ══════════ v6 ConfigProvider ══════════ -->
+<section class="section" id="v6-provider">
+  <div class="section-header">
+    <div class="section-eyebrow">AntD v6 · Usage</div>
+    <div class="section-title">ConfigProvider Setup</div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-v6">AntD v6</span>
+      <span class="code-badge cb-ts">TSX</span>
+      <span class="code-badge cb-file">App.tsx</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="ci">import</span> { <span class="ct">ConfigProvider</span> } <span class="ci">from</span> <span class="cs">'antd'</span>;
+<span class="ci">import</span> theme <span class="ci">from</span> <span class="cs">'./theme/tokens.v6'</span>;
+<span class="ci">import</span> <span class="cs">'./globals.css'</span>;                    <span class="cc">// AI tokens + :root vars</span>
+
+<span class="cc">// Self-hosted Inter font</span>
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/300.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/400.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/500.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/600.css'</span>;
+<span class="ci">import</span> <span class="cs">'@fontsource/inter/700.css'</span>;
+
+<span class="cf">export default function</span> <span class="cm">App</span>() {
+  <span class="cf">return</span> (
+    &lt;<span class="ct">ConfigProvider</span> theme={theme}&gt;
+      {<span class="cc">/* your app */</span>}
+    &lt;/<span class="ct">ConfigProvider</span>&gt;
+  );
+}
+
+<span class="cc">// ── Using tokens in a component ─────────────────────
+// import { useAIToken } from './hooks/useAIToken';
+//
+// function MyComponent() {
+//   const { colorPrimary, antdCssVar, ai, aiCssVar } = useAIToken();
+//   return (
+//     &lt;div style={{ color: colorPrimary }}&gt;
+//       &lt;span style={{ background: aiCssVar.background }}&gt;AI Feature&lt;/span&gt;
+//     &lt;/div&gt;
+//   );
+// }</span></pre>
+  </div>
+
+  <div class="callout callout-warning">
+    <div class="callout-title">⚠ zeroRuntime note</div>
+    Adding <code style="font-family:var(--mono);font-size:11px;">zeroRuntime: true</code> to the theme config requires a build plugin (<code style="font-family:var(--mono);font-size:11px;">@ant-design/cssinjs-vite-plugin</code> for Vite or <code style="font-family:var(--mono);font-size:11px;">@ant-design/cssinjs-webpack-plugin</code> for webpack). It statically extracts all CSS at build time for the best possible performance.
+  </div>
+</section>
+
+<!-- ══════════ FONT SETUP ══════════ -->
+<section class="section" id="fonts">
+  <div class="section-header">
+    <div class="section-eyebrow">Font Setup</div>
+    <div class="section-title">Inter + IBM Plex Mono Installation</div>
+    <div class="section-desc">Two options: self-hosted via @fontsource (recommended) or Google Fonts CDN.</div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-file">Option A — Self-hosted (recommended)</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="cc"># Install font packages</span>
+npm install @fontsource/inter @fontsource/ibm-plex-mono</pre>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-label">
+      <span class="code-badge cb-file">Option B — Google Fonts CDN</span>
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+    </div>
+    <pre><span class="cc">&lt;!-- In your index.html &lt;head&gt; --&gt;</span>
+&lt;<span class="ct">link</span> rel=<span class="cs">"preconnect"</span> href=<span class="cs">"https://fonts.googleapis.com"</span>&gt;
+&lt;<span class="ct">link</span> rel=<span class="cs">"preconnect"</span> href=<span class="cs">"https://fonts.gstatic.com"</span> crossorigin&gt;
+&lt;<span class="ct">link</span> href=<span class="cs">"https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"</span> rel=<span class="cs">"stylesheet"</span>&gt;</pre>
+  </div>
+</section>
+
+</main>
+
+<script>
+// Sidebar active state
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+// Scroll spy
+const sections = document.querySelectorAll('section[id], div[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) current = s.id;
+  });
+  navItems.forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('href') === '#' + current) n.classList.add('active');
+  });
+});
+
+// Copy button
+function copyCode(btn) {
+  const pre = btn.closest('.code-wrap').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.style.color = '#86efac';
+    btn.style.borderColor = '#86efac';
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1800);
+  });
+}
+</script>
+</body>
+</html>

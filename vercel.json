@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "design-system-tokens",
+  "builds": [
+    { "src": "**/*", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

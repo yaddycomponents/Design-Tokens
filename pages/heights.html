@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Height Token System</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f5f2;--surface:#fff;--surface-2:#f2f0ed;--ink:#1a1814;--ink-2:#5a5550;--ink-3:#9a938c;--rule:#e2ddd8;--accent:#531dab;--mono:'IBM Plex Mono',monospace;--serif:'Fraunces',serif;--sans:'Inter',sans-serif}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6}
+.page{max-width:1360px;margin:0 auto;padding:64px 48px 120px}
+.page-header{border-bottom:1px solid var(--rule);padding-bottom:40px;margin-bottom:64px;display:flex;justify-content:space-between;align-items:flex-end}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+h1{font-family:var(--serif);font-size:48px;font-weight:300;letter-spacing:-.03em;line-height:1}
+h1 em{font-style:italic;color:var(--accent)}
+.header-stats{display:flex;gap:32px;margin-top:16px}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat-value{font-family:var(--mono);font-size:22px;font-weight:600}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.badge{font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:4px;letter-spacing:.06em}
+.badge-purple{background:var(--accent);color:#fff}
+.badge-outline{border:1px solid var(--rule);color:var(--ink-3)}
+.badge-antd{background:#fff7e6;border:1px solid #ffd591;color:#d46b08}
+.section{margin-bottom:72px;animation:fadeUp .45s ease both}
+.s1{animation-delay:.04s}.s2{animation-delay:.10s}.s3{animation-delay:.17s}.s4{animation-delay:.24s}.s5{animation-delay:.31s}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.section-num{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.section-title{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.02em}
+.section-desc{font-size:12px;color:var(--ink-3)}
+.section-count{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);background:var(--surface-2);padding:3px 10px;border-radius:4px;border:1px solid var(--rule)}
+.antd-card{background:#fffbe6;border:1px solid #ffd591;border-radius:10px;padding:20px 24px;display:flex;align-items:flex-start;gap:28px;margin-bottom:28px;flex-wrap:wrap}
+.antd-card-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#ad6800;margin-bottom:8px}
+.antd-tokens{display:flex;flex-wrap:wrap;gap:6px}
+.antd-tok{font-family:var(--mono);font-size:11px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:3px 10px;border-radius:4px}
+.antd-tok.seed{color:#8b5cf6;background:#f5f3ff;border-color:#ddd6fe}
+.antd-divider{width:1px;background:#ffd591;align-self:stretch}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden;font-size:13px;margin-bottom:8px}
+thead tr{background:var(--surface-2)}
+th{text-align:left;padding:10px 12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule)}
+th.antd-th{color:#d46b08!important;background:#fff7e6!important;border-bottom:1px solid #ffd591!important}
+td{padding:10px 12px;border-bottom:1px solid var(--surface-2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#faf9f7}
+tr.base-row td{background:#faf7ff}
+.t-name{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink)}
+.t-name.hi{color:var(--accent)}
+.t-antd{font-family:var(--mono);font-size:11px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:2px 8px;border-radius:3px;display:inline-block;white-space:nowrap}
+.t-antd.none{color:var(--ink-3);background:var(--surface-2);border-color:var(--rule);font-style:italic}
+.t-val{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.t-use{font-size:11px;color:var(--ink-3);font-style:italic}
+.lbadge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid}
+.l-seed{color:#6d28d9;border-color:#ddd6fe;background:#f5f3ff}
+.l-map{color:#0369a1;border-color:#bae6fd;background:#f0f9ff}
+.base-tag{font-family:var(--mono);font-size:9px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:3px;margin-left:6px}
+.group-row td{background:var(--surface-2);padding:7px 12px;font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--rule)}
+
+/* Height scale visual */
+.height-visual{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:40px 32px;margin-bottom:28px;display:flex;align-items:flex-end;gap:24px;justify-content:center}
+.hv-item{display:flex;flex-direction:column;align-items:center;gap:10px}
+.hv-bar{width:48px;background:var(--accent);border-radius:6px;transition:transform .15s}
+.hv-bar:hover{transform:scaleX(1.15)}
+.hv-bar.base{background:var(--accent)}
+.hv-bar.muted{background:var(--accent);opacity:.35}
+.hv-label{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.hv-token{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink)}
+.hv-token.hi{color:var(--accent)}
+.hv-px{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink)}
+.hv-antd{font-family:var(--mono);font-size:10px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.hv-antd.none{color:var(--ink-3);background:var(--surface-2);border-color:var(--rule)}
+
+/* Demo */
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.demo-card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.demo-lbl{padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.demo-canvas{padding:24px 20px;display:flex;flex-direction:column;gap:14px}
+.demo-tokens{padding:12px 16px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:4px}
+.dtr{font-family:var(--mono);font-size:10px;color:var(--ink-3);display:flex;justify-content:space-between;gap:12px}
+.dtr span:first-child{color:var(--ink-2);flex-shrink:0}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<link rel="stylesheet" href="../shared-theme.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <div>
+      <div class="eyebrow">Design System · Foundations</div>
+      <h1>Component <em>Height</em> Tokens</h1>
+      <div class="header-stats">
+        <div class="stat"><span class="stat-value">5</span><span class="stat-label">Size Steps</span></div>
+        <div class="stat"><span class="stat-value">32px</span><span class="stat-label">Base Seed (MD)</span></div>
+        <div class="stat"><span class="stat-value">4px</span><span class="stat-label">Grid Unit</span></div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge badge-purple">v1.0.0</span>
+      <span class="badge badge-outline">controlHeight · 5 steps</span>
+      <span class="badge badge-antd">↔ AntD v5 Reference</span>
+    </div>
+  </header>
+
+  <!-- 00 AntD Seeds -->
+  <div class="section s1">
+    <div class="section-header">
+      <span class="section-num">00</span>
+      <div class="section-title">AntD v5 Control Height Seeds</div>
+      <div class="section-desc">controlHeight is the single seed · All sizes derived from it</div>
+    </div>
+    <div class="antd-card">
+      <div>
+        <div class="antd-card-label">Seed + formula</div>
+        <div style="font-family:var(--mono);font-size:15px;font-weight:600;color:#874d00;margin-bottom:6px;">controlHeight = 32px ★</div>
+        <div style="font-family:var(--mono);font-size:10px;color:#ad6800;">XS = ×0.75 · SM = ×0.875 · MD = ×1 · LG = ×1.25 · XL = ×1.5</div>
+      </div>
+      <div class="antd-divider"></div>
+      <div>
+        <div class="antd-card-label">All derived tokens</div>
+        <div class="antd-tokens">
+          <span class="antd-tok seed">controlHeight = 32 ★</span>
+          <span class="antd-tok">controlHeightXS = 24</span>
+          <span class="antd-tok">controlHeightSM = 28</span>
+          <span class="antd-tok">controlHeightLG = 40</span>
+          <span class="antd-tok">controlHeightXL = 48</span>
+        </div>
+      </div>
+      <div class="antd-divider"></div>
+      <div>
+        <div class="antd-card-label">Why this matters</div>
+        <div style="font-family:var(--sans);font-size:12px;color:var(--ink-2);max-width:200px;">All interactive controls — buttons, inputs, selects, date pickers — share the same height scale. Changing <code style="font-family:var(--mono);font-size:11px;background:var(--surface-2);padding:1px 5px;border-radius:3px;">controlHeight</code> in ConfigProvider resizes all at once.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 Height Scale Visual -->
+  <div class="section s2">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div class="section-title">Height Scale — Visual</div>
+      <div class="section-desc">Bars represent actual px heights · MD = 32px base seed</div>
+      <div class="section-count">5 tokens</div>
+    </div>
+
+    <div class="height-visual">
+      <div class="hv-item">
+        <div class="hv-bar muted" style="height:24px;"></div>
+        <div class="hv-label">
+          <span class="hv-px">24px</span>
+          <span class="hv-token">height.XS</span>
+          <span class="hv-antd">controlHeightXS</span>
+        </div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-bar muted" style="height:28px;opacity:.5;"></div>
+        <div class="hv-label">
+          <span class="hv-px">28px</span>
+          <span class="hv-token">height.SM</span>
+          <span class="hv-antd">controlHeightSM</span>
+        </div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-bar base" style="height:32px;outline:2px solid var(--accent);outline-offset:3px;"></div>
+        <div class="hv-label">
+          <span class="hv-px" style="color:var(--accent);">32px</span>
+          <span class="hv-token hi">height.MD ★</span>
+          <span class="hv-antd" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">controlHeight (seed)</span>
+        </div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-bar muted" style="height:40px;opacity:.65;"></div>
+        <div class="hv-label">
+          <span class="hv-px">40px</span>
+          <span class="hv-token">height.LG</span>
+          <span class="hv-antd">controlHeightLG</span>
+        </div>
+      </div>
+      <div class="hv-item">
+        <div class="hv-bar muted" style="height:48px;opacity:.5;"></div>
+        <div class="hv-label">
+          <span class="hv-px">48px</span>
+          <span class="hv-token">height.XL</span>
+          <span class="hv-antd">controlHeightXL</span>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Token Name</th>
+          <th>Value</th>
+          <th>Multiplier</th>
+          <th class="antd-th">AntD v5 Token</th>
+          <th>Used For</th>
+          <th>Layer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="t-name">height.XS</span></td><td><span class="t-val">24px</span></td><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">×0.75</span></td><td><span class="t-antd">controlHeightXS</span></td><td><span class="t-use">Mini buttons, small chips, inline actions</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+        <tr><td><span class="t-name">height.SM</span></td><td><span class="t-val">28px</span></td><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">×0.875</span></td><td><span class="t-antd">controlHeightSM</span></td><td><span class="t-use">Small buttons, compact table rows, tight selects</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+        <tr class="base-row"><td><span class="t-name hi">height.MD ★</span></td><td><span class="t-val">32px</span></td><td><span style="font-family:var(--mono);font-size:11px;color:var(--accent);">×1 (seed)</span></td><td><span class="t-antd" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">controlHeight</span></td><td><span class="t-use">Default buttons, inputs, selects — all standard controls</span></td><td><span class="lbadge l-seed">Seed</span></td></tr>
+        <tr><td><span class="t-name">height.LG</span></td><td><span class="t-val">40px</span></td><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">×1.25</span></td><td><span class="t-antd">controlHeightLG</span></td><td><span class="t-use">Large buttons, search bars, prominent CTAs</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+        <tr><td><span class="t-name">height.XL</span></td><td><span class="t-val">48px</span></td><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">×1.5</span></td><td><span class="t-antd">controlHeightXL</span></td><td><span class="t-use">Hero CTAs, page-level actions, onboarding flows</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 02 All controls applied -->
+  <div class="section s3">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div class="section-title">All Controls — Same Height Per Size</div>
+      <div class="section-desc">Buttons, inputs, selects, checkboxes all share height.* — sizes stay vertically consistent</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Size</th><th>height.* Token</th><th>Button</th><th>Input</th><th>Select</th><th>Font Size</th><th>Padding X</th><th class="antd-th">AntD v5</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">XS</span></td><td><span class="t-name">height.XS</span></td><td><span class="t-val">24px</span></td><td><span class="t-val">24px</span></td><td><span class="t-val">24px</span></td><td><span class="t-val">font.size.SM (12px)</span></td><td><span class="t-val">space.padding.XS (8px)</span></td><td><span class="t-antd">controlHeightXS</span></td></tr>
+        <tr><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">SM</span></td><td><span class="t-name">height.SM</span></td><td><span class="t-val">28px</span></td><td><span class="t-val">28px</span></td><td><span class="t-val">28px</span></td><td><span class="t-val">font.size.SM (12px)</span></td><td><span class="t-val">space.padding.SM (12px)</span></td><td><span class="t-antd">controlHeightSM</span></td></tr>
+        <tr class="base-row"><td><span style="font-family:var(--mono);font-size:11px;color:var(--accent);">MD ★</span></td><td><span class="t-name hi">height.MD</span></td><td><span class="t-val">32px</span></td><td><span class="t-val">32px</span></td><td><span class="t-val">32px</span></td><td><span class="t-val">font.size.MD (14px)</span></td><td><span class="t-val">space.padding.MD (16px)</span></td><td><span class="t-antd" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">controlHeight</span></td></tr>
+        <tr><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">LG</span></td><td><span class="t-name">height.LG</span></td><td><span class="t-val">40px</span></td><td><span class="t-val">40px</span></td><td><span class="t-val">40px</span></td><td><span class="t-val">font.size.LG (16px)</span></td><td><span class="t-val">space.padding.LG (20px)</span></td><td><span class="t-antd">controlHeightLG</span></td></tr>
+        <tr><td><span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">XL</span></td><td><span class="t-name">height.XL</span></td><td><span class="t-val">48px</span></td><td><span class="t-val">48px</span></td><td><span class="t-val">48px</span></td><td><span class="t-val">font.size.XL (20px)</span></td><td><span class="t-val">space.padding.XL (24px)</span></td><td><span class="t-antd">controlHeightXL</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 03 Demo -->
+  <div class="section s4">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <div class="section-title">Component Demos</div>
+      <div class="section-desc">Height tokens applied to real controls at each size</div>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-lbl">Buttons — All 5 Sizes</div>
+        <div class="demo-canvas" style="flex-direction:row;align-items:center;flex-wrap:wrap;gap:10px;">
+          <button style="height:24px;padding:0 10px;background:#531dab;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:500;font-family:var(--sans);cursor:default;">XS</button>
+          <button style="height:28px;padding:0 12px;background:#531dab;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:500;font-family:var(--sans);cursor:default;">SM</button>
+          <button style="height:32px;padding:0 16px;background:#531dab;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;font-family:var(--sans);cursor:default;outline:2px solid #531dab;outline-offset:2px;">MD ★</button>
+          <button style="height:40px;padding:0 20px;background:#531dab;color:#fff;border:none;border-radius:6px;font-size:16px;font-weight:600;font-family:var(--sans);cursor:default;">LG</button>
+          <button style="height:48px;padding:0 24px;background:#531dab;color:#fff;border:none;border-radius:6px;font-size:20px;font-weight:600;font-family:var(--sans);cursor:default;">XL</button>
+        </div>
+        <div class="demo-tokens">
+          <div class="dtr"><span>XS (24px)</span><span>height.XS → controlHeightXS</span></div>
+          <div class="dtr"><span>SM (28px)</span><span>height.SM → controlHeightSM</span></div>
+          <div class="dtr"><span>MD ★ (32px)</span><span>height.MD → controlHeight</span></div>
+          <div class="dtr"><span>LG (40px)</span><span>height.LG → controlHeightLG</span></div>
+          <div class="dtr"><span>XL (48px)</span><span>height.XL → controlHeightXL</span></div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-lbl">Inputs — Size Pairing with Font</div>
+        <div class="demo-canvas">
+          <input style="height:24px;padding:0 8px;border:1px solid #d9d9d9;border-radius:4px;font-size:12px;font-family:var(--sans);background:#fff;color:var(--ink);" placeholder="XS — 24px / font 12px" readonly>
+          <input style="height:28px;padding:0 10px;border:1px solid #d9d9d9;border-radius:4px;font-size:12px;font-family:var(--sans);background:#fff;color:var(--ink);" placeholder="SM — 28px / font 12px" readonly>
+          <input style="height:32px;padding:0 12px;border:2px solid #9254de;border-radius:6px;font-size:14px;font-family:var(--sans);background:#fff;color:var(--ink);box-shadow:0 0 0 3px #f9f0ff;" placeholder="MD ★ — 32px / font 14px" readonly>
+          <input style="height:40px;padding:0 16px;border:1px solid #d9d9d9;border-radius:6px;font-size:16px;font-family:var(--sans);background:#fff;color:var(--ink);" placeholder="LG — 40px / font 16px" readonly>
+          <input style="height:48px;padding:0 20px;border:1px solid #d9d9d9;border-radius:6px;font-size:20px;font-family:var(--sans);background:#fff;color:var(--ink);" placeholder="XL — 48px / font 20px" readonly>
+        </div>
+        <div class="demo-tokens">
+          <div class="dtr"><span>Input height</span><span>height.{size} → controlHeight{size}</span></div>
+          <div class="dtr"><span>Font pairing</span><span>font.size.{size} follows height.{size}</span></div>
+          <div class="dtr"><span>Padding X</span><span>space.padding.{size} follows too</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="border-top:1px solid var(--rule);padding-top:28px;margin-top:80px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">Component Height Token System · v1.0.0 · 5 steps · 24–48px</span>
+    <span style="font-family:var(--mono);font-size:11px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:3px 10px;border-radius:4px;">↔ AntD v5: controlHeight=32 · controlHeightXS=24 · controlHeightSM=28 · controlHeightLG=40 · controlHeightXL=48</span>
+  </footer>
+</div>
+</body>
+</html>

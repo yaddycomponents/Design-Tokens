@@ -1,0 +1,366 @@
+/* ═══════════════════════════════════════════════════════
+   Untitled UI — Shared theme override for all inner pages
+   Applied after each page's own CSS to update palette,
+   typography, and table styles to match UntitledUI.com
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+/* ── Color token overrides ── */
+:root {
+  --bg:        #F9FAFB !important;
+  --surface:   #FFFFFF !important;
+  --surface-2: #F9FAFB !important;
+  --ink:       #101828 !important;
+  --ink-2:     #344054 !important;
+  --ink-3:     #667085 !important;
+  --rule:      #EAECF0 !important;
+  --accent:    #7F56D9 !important;
+  --accent-2:  #6941C6;
+  --accent-bg: #F9F5FF;
+  --accent-lt: #E9D7FE;
+  /* legacy overrides */
+  --serif: 'Inter', sans-serif;
+}
+
+/* ── Base ── */
+body {
+  background: #F9FAFB;
+  color: #101828;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Page header ── */
+.page-header {
+  border-bottom: 1px solid #EAECF0 !important;
+  padding-bottom: 32px !important;
+  margin-bottom: 48px !important;
+  background: #FFFFFF;
+  padding: 40px 48px 32px;
+  margin: 0 -48px 48px;
+  border-top: none;
+}
+
+.eyebrow {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: .04em !important;
+  color: #6941C6 !important;
+  text-transform: uppercase;
+}
+
+h1, h2, h3 {
+  font-family: 'Inter', sans-serif !important;
+  letter-spacing: -.02em !important;
+}
+h1 { font-size: 36px !important; font-weight: 700 !important; color: #101828 !important; }
+h1 em { color: #7F56D9 !important; font-style: normal !important; }
+
+.stat-value { font-family: 'Inter', sans-serif !important; color: #101828 !important; }
+.stat-label { font-family: 'Inter', sans-serif !important; color: #667085 !important; }
+
+/* ── Badges in header ── */
+.badge { border-radius: 6px !important; font-family: 'Inter', sans-serif !important; }
+.badge-purple { background: #7F56D9 !important; }
+.badge-outline { border-color: #D0D5DD !important; color: #344054 !important; }
+
+/* ── Section headers ── */
+.section-header {
+  border-bottom: 1px solid #EAECF0 !important;
+}
+.section-num { color: #98A2B3 !important; font-family: 'Inter', sans-serif !important; }
+.section-title {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 20px !important;
+  letter-spacing: -.01em !important;
+  color: #101828 !important;
+}
+.section-desc { color: #667085 !important; font-size: 13px !important; }
+.section-count {
+  font-family: 'Inter', sans-serif !important;
+  background: #FFFFFF !important;
+  border: 1px solid #EAECF0 !important;
+  color: #667085 !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+}
+
+/* ── Scale-visual (primitive scale table) ── */
+.scale-visual {
+  border: 1px solid #EAECF0 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+.sv-head {
+  background: #F9FAFB !important;
+  border-bottom: 1px solid #EAECF0 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .04em !important;
+  color: #667085 !important;
+  padding: 10px 20px !important;
+}
+.sv-head .antd-h { color: #6941C6 !important; }
+.sv-row {
+  border-bottom: 1px solid #EAECF0 !important;
+  padding: 10px 20px !important;
+}
+.sv-row:last-child { border-bottom: none !important; }
+.sv-row:hover { background: #F9FAFB !important; }
+.sv-row.base { background: #F9F5FF !important; }
+.sv-step { color: #98A2B3 !important; }
+.sv-name { color: #344054 !important; }
+.sv-row.base .sv-name { color: #6941C6 !important; }
+.sv-val { color: #101828 !important; }
+.sv-bar { background: #7F56D9 !important; }
+.sv-antd {
+  color: #6941C6 !important;
+  background: #F9F5FF !important;
+  border: 1px solid #E9D7FE !important;
+  border-radius: 6px !important;
+}
+.sv-antd.custom { color: #667085 !important; background: #F9FAFB !important; border-color: #EAECF0 !important; }
+.base-tag { background: #7F56D9 !important; border-radius: 4px !important; }
+
+/* ── Token tables ── */
+table,
+.token-table {
+  border: 1px solid #EAECF0 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  font-size: 13px !important;
+}
+thead tr { background: #F9FAFB !important; }
+th {
+  padding: 10px 16px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .04em !important;
+  color: #667085 !important;
+  border-bottom: 1px solid #EAECF0 !important;
+}
+th.ah, th.antd-th, .token-table th.antd-th {
+  color: #6941C6 !important;
+  background: #F9F5FF !important;
+  border-bottom: 1px solid #E9D7FE !important;
+}
+td {
+  padding: 11px 16px !important;
+  border-bottom: 1px solid #F2F4F7 !important;
+  vertical-align: middle !important;
+}
+tr:last-child td { border-bottom: none !important; }
+tr:hover td { background: #F9FAFB !important; }
+tr.base-row td { background: #F9F5FF !important; }
+tr.base-row:hover td { background: #F4EBFF !important; }
+tr.group-row td,
+tr.group-header td {
+  background: #F9FAFB !important;
+  color: #667085 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+  border-bottom: 1px solid #EAECF0 !important;
+  padding: 8px 16px !important;
+}
+
+/* ── Cell types ── */
+.tn, .css-var, .token-name {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  color: #344054 !important;
+}
+.tn.hi, .token-name:not(.gray) { color: #6941C6 !important; }
+.css-var { color: #6941C6 !important; }
+.tv, .token-value, .sv-name {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 12px !important;
+  color: #344054 !important;
+}
+.tref {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: #344054 !important;
+  background: #F9FAFB !important;
+  border: 1px solid #D0D5DD !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+}
+.tantd, .antd-ref {
+  font-family: 'IBM Plex Mono', monospace !important;
+  font-size: 11px !important;
+  color: #6941C6 !important;
+  background: #F9F5FF !important;
+  border: 1px solid #E9D7FE !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+}
+.tantd.no, .antd-ref.na {
+  color: #667085 !important;
+  background: #F9FAFB !important;
+  border-color: #EAECF0 !important;
+  font-style: italic !important;
+}
+.tu { color: #667085 !important; font-size: 12px !important; }
+
+/* ── Role badges ── */
+.rp { color: #175CD3 !important; font-weight: 600 !important; }
+.rg { color: #027A48 !important; font-weight: 600 !important; }
+
+/* ── Layer badges ── */
+.lb, .layer-badge {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+}
+.l-seed, .lb-prim {
+  color: #6941C6 !important;
+  border-color: #E9D7FE !important;
+  background: #F9F5FF !important;
+}
+.l-map, .lb-sem {
+  color: #175CD3 !important;
+  border-color: #B2DDFF !important;
+  background: #EFF8FF !important;
+}
+.lb-alias {
+  color: #027A48 !important;
+  border-color: #ABEFC6 !important;
+  background: #ECFDF3 !important;
+}
+
+/* ── Bar visualizer ── */
+.bb { background: #7F56D9 !important; }
+.bv { color: #98A2B3 !important; }
+
+/* ── Matrix ── */
+.matrix {
+  border: 1px solid #EAECF0 !important;
+  border-radius: 8px !important;
+}
+.mh { background: #F9FAFB !important; border-bottom: 1px solid #EAECF0 !important; }
+.mc {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .04em !important;
+  color: #667085 !important;
+  border-right-color: #EAECF0 !important;
+  padding: 10px 16px !important;
+}
+.mc.ah { color: #6941C6 !important; background: #F9F5FF !important; }
+.mr { border-bottom: 1px solid #F2F4F7 !important; }
+.mr:last-child { border-bottom: none !important; }
+.mr:hover { background: #F9FAFB !important; }
+.mr.base { background: #F9F5FF !important; }
+.mr .mc { font-size: 12px !important; letter-spacing: 0 !important; color: #344054 !important; text-transform: none !important; font-weight: 400 !important; }
+.mr .mc.step { color: #98A2B3 !important; }
+.mr.base .mc.step { color: #6941C6 !important; font-weight: 600 !important; }
+.cp { color: #175CD3 !important; }
+.cg { color: #027A48 !important; }
+.ca { color: #6941C6 !important; font-size: 12px !important; }
+.ca.no { color: #667085 !important; font-style: italic !important; }
+
+/* ── Info box ── */
+.antd-info {
+  background: #F9F5FF !important;
+  border: 1px solid #E9D7FE !important;
+  border-radius: 8px !important;
+}
+.antd-info-title { color: #6941C6 !important; font-family: 'Inter', sans-serif !important; }
+.antd-info-text { color: #344054 !important; }
+.antd-formula {
+  color: #6941C6 !important;
+  border-color: #E9D7FE !important;
+  border-radius: 6px !important;
+}
+
+/* ── Demo cards ── */
+.demo-card {
+  border: 1px solid #EAECF0 !important;
+  border-radius: 8px !important;
+}
+.dlbl {
+  background: #F9FAFB !important;
+  border-bottom: 1px solid #EAECF0 !important;
+  color: #667085 !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+}
+.dtr { font-family: 'Inter', sans-serif !important; color: #667085 !important; }
+.dtr span:first-child { color: #344054 !important; }
+
+/* ── Chapter (token-reference) ── */
+.chapter-header { border-bottom: 1px solid #EAECF0 !important; }
+.ch-num { color: #98A2B3 !important; font-family: 'Inter', sans-serif !important; }
+.ch-title { color: #101828 !important; font-family: 'Inter', sans-serif !important; }
+.pill { border-radius: 6px !important; font-family: 'Inter', sans-serif !important; }
+.pill-count { color: #667085 !important; border-color: #EAECF0 !important; background: #F9FAFB !important; }
+.pill-antd {
+  color: #6941C6 !important;
+  border-color: #E9D7FE !important;
+  background: #F9F5FF !important;
+}
+
+/* ── Sub table label ── */
+.sub-table-label { color: #98A2B3 !important; font-family: 'Inter', sans-serif !important; }
+.sub-table-label::after { background: #EAECF0 !important; }
+
+/* ── Page hero (token-reference) ── */
+.page-hero {
+  background: #FFFFFF !important;
+  border-bottom: 1px solid #EAECF0 !important;
+}
+.hero-eyebrow { color: #667085 !important; font-family: 'Inter', sans-serif !important; }
+.hero-title { color: #101828 !important; font-family: 'Inter', sans-serif !important; }
+.hero-title span { color: #7F56D9 !important; }
+.hero-sub { color: #667085 !important; }
+.hero-stats { border-color: #EAECF0 !important; border-radius: 8px !important; }
+.hs { border-right-color: #EAECF0 !important; }
+.hs-val { font-family: 'Inter', sans-serif !important; color: #101828 !important; }
+.hs-lbl { font-family: 'Inter', sans-serif !important; color: #667085 !important; }
+
+/* ── Swatch previews ── */
+.swatch { border-radius: 6px !important; }
+.radius-preview { background: #7F56D9 !important; }
+
+/* ── Footer ── */
+footer { border-top-color: #EAECF0 !important; }
+
+/* ── Sidenav inside token-reference page ── */
+.sidenav { background: #FFFFFF !important; border-right: 1px solid #EAECF0 !important; }
+.sidenav-logo { border-bottom-color: #EAECF0 !important; }
+.logo-title { color: #101828 !important; }
+.logo-sub { color: #667085 !important; }
+.nav-group-label { color: #98A2B3 !important; }
+.nav-item:hover { background: #F9FAFB !important; }
+.nav-item.active { background: #F9F5FF !important; border-left-color: #7F56D9 !important; }
+.nav-label { color: #344054 !important; }
+.nav-item.active .nav-label { color: #6941C6 !important; }
+.nav-count { color: #98A2B3 !important; }
+.sidenav-foot { border-top-color: #EAECF0 !important; }
+.antd-pill {
+  color: #6941C6 !important;
+  background: #F9F5FF !important;
+  border-color: #E9D7FE !important;
+}
+
+/* ── Config code block (antd-config page) ── */
+.config-chapter {
+  background: #F8F7FF !important;
+  border: 1px solid #E9D7FE !important;
+  border-radius: 8px !important;
+}
+.config-label { color: #6941C6 !important; }
+.config-code { color: #344054 !important; }

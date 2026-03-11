@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadow & Elevation Token System</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f5f2;--surface:#fff;--surface-2:#f2f0ed;--ink:#1a1814;--ink-2:#5a5550;--ink-3:#9a938c;--rule:#e2ddd8;--accent:#531dab;--mono:'IBM Plex Mono',monospace;--serif:'Fraunces',serif;--sans:'Inter',sans-serif}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6}
+.page{max-width:1360px;margin:0 auto;padding:64px 48px 120px}
+.page-header{border-bottom:1px solid var(--rule);padding-bottom:40px;margin-bottom:64px;display:flex;justify-content:space-between;align-items:flex-end}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+h1{font-family:var(--serif);font-size:48px;font-weight:300;letter-spacing:-.03em;line-height:1}
+h1 em{font-style:italic;color:var(--accent)}
+.header-stats{display:flex;gap:32px;margin-top:16px}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat-value{font-family:var(--mono);font-size:22px;font-weight:600}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.badge{font-family:var(--mono);font-size:11px;padding:4px 12px;border-radius:4px;letter-spacing:.06em}
+.badge-purple{background:var(--accent);color:#fff}
+.badge-outline{border:1px solid var(--rule);color:var(--ink-3)}
+.badge-antd{background:#fff7e6;border:1px solid #ffd591;color:#d46b08}
+.section{margin-bottom:72px;animation:fadeUp .45s ease both}
+.s1{animation-delay:.04s}.s2{animation-delay:.10s}.s3{animation-delay:.17s}.s4{animation-delay:.24s}
+.section-header{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.section-num{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.section-title{font-family:var(--serif);font-size:24px;font-weight:600;letter-spacing:-.02em}
+.section-desc{font-size:12px;color:var(--ink-3)}
+.section-count{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);background:var(--surface-2);padding:3px 10px;border-radius:4px;border:1px solid var(--rule)}
+.antd-card{background:#fffbe6;border:1px solid #ffd591;border-radius:10px;padding:20px 24px;display:flex;align-items:flex-start;gap:28px;margin-bottom:28px;flex-wrap:wrap}
+.antd-card-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#ad6800;margin-bottom:8px}
+.antd-tokens{display:flex;flex-wrap:wrap;gap:6px}
+.antd-tok{font-family:var(--mono);font-size:11px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:3px 10px;border-radius:4px}
+.antd-tok.seed{color:#8b5cf6;background:#f5f3ff;border-color:#ddd6fe}
+.antd-divider{width:1px;background:#ffd591;align-self:stretch}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden;font-size:13px;margin-bottom:8px}
+thead tr{background:var(--surface-2)}
+th{text-align:left;padding:10px 12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;border-bottom:1px solid var(--rule)}
+th.antd-th{color:#d46b08!important;background:#fff7e6!important;border-bottom:1px solid #ffd591!important}
+td{padding:10px 12px;border-bottom:1px solid var(--surface-2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#faf9f7}
+tr.base-row td{background:#faf7ff}
+.t-name{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink)}
+.t-name.hi{color:var(--accent)}
+.t-antd{font-family:var(--mono);font-size:11px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:2px 8px;border-radius:3px;display:inline-block;white-space:nowrap}
+.t-antd.none{color:var(--ink-3);background:var(--surface-2);border-color:var(--rule);font-style:italic}
+.t-val{font-family:var(--mono);font-size:11px;color:var(--ink-2);word-break:break-all}
+.t-use{font-size:11px;color:var(--ink-3);font-style:italic}
+.lbadge{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid}
+.l-seed{color:#6d28d9;border-color:#ddd6fe;background:#f5f3ff}
+.l-map{color:#0369a1;border-color:#bae6fd;background:#f0f9ff}
+.base-tag{font-family:var(--mono);font-size:9px;background:var(--accent);color:#fff;padding:1px 6px;border-radius:3px;margin-left:6px}
+
+/* Elevation visual */
+.elevation-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:32px;margin-bottom:32px;padding:40px;background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+.elev-item{display:flex;flex-direction:column;align-items:center;gap:14px}
+.elev-shape{width:80px;height:80px;border-radius:8px;background:#fff;transition:transform .2s}
+.elev-shape:hover{transform:translateY(-4px)}
+.elev-label{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center}
+.elev-token{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--ink)}
+.elev-token.hi{color:var(--accent)}
+.elev-antd{font-family:var(--mono);font-size:10px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:2px 7px;border-radius:3px}
+.elev-antd.none{color:var(--ink-3);background:var(--surface-2);border-color:var(--rule)}
+
+/* Demo */
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.demo-card{background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.demo-lbl{padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.demo-canvas{padding:32px 24px;display:flex;flex-direction:column;gap:16px;background:#f0eeeb}
+.demo-tokens{padding:12px 16px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:4px}
+.dtr{font-family:var(--mono);font-size:10px;color:var(--ink-3);display:flex;justify-content:space-between;gap:12px}
+.dtr span:first-child{color:var(--ink-2);flex-shrink:0}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+</style>
+<link rel="stylesheet" href="../shared-theme.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <div>
+      <div class="eyebrow">Design System · Foundations</div>
+      <h1>Shadow <em>&</em> Elevation</h1>
+      <div class="header-stats">
+        <div class="stat"><span class="stat-value">5</span><span class="stat-label">Levels</span></div>
+        <div class="stat"><span class="stat-value">none→XL</span><span class="stat-label">Range</span></div>
+        <div class="stat"><span class="stat-value">rgba(0,0,0)</span><span class="stat-label">Color</span></div>
+      </div>
+    </div>
+    <div class="header-right">
+      <span class="badge badge-purple">v1.0.0</span>
+      <span class="badge badge-outline">Box Shadow Scale</span>
+      <span class="badge badge-antd">↔ AntD v5 Reference</span>
+    </div>
+  </header>
+
+  <!-- 00 AntD Seeds -->
+  <div class="section s1">
+    <div class="section-header">
+      <span class="section-num">00</span>
+      <div class="section-title">AntD v5 Shadow Tokens</div>
+      <div class="section-desc">3 named tokens in AntD · We extend with none and XL</div>
+    </div>
+    <div class="antd-card">
+      <div>
+        <div class="antd-card-label">Primary shadows</div>
+        <div class="antd-tokens">
+          <span class="antd-tok seed">boxShadow ★</span>
+          <span class="antd-tok">boxShadowSecondary</span>
+          <span class="antd-tok">boxShadowTertiary</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:#ad6800;margin-top:8px;">Used for: dropdowns, cards, modals</div>
+      </div>
+      <div class="antd-divider"></div>
+      <div>
+        <div class="antd-card-label">AntD boxShadow values</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-2);">boxShadow: 0 6px 16px rgba(0,0,0,.08), 0 3px 6px -4px rgba(0,0,0,.12), 0 9px 28px 8px rgba(0,0,0,.05)</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-2);">boxShadowSecondary: 0 6px 16px rgba(0,0,0,.08), 0 3px 6px -4px rgba(0,0,0,.12), 0 9px 28px 8px rgba(0,0,0,.05)</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--ink-2);">boxShadowTertiary: 0 1px 2px rgba(0,0,0,.03), 0 1px 6px -1px rgba(0,0,0,.02), 0 2px 4px rgba(0,0,0,.02)</div>
+        </div>
+      </div>
+      <div class="antd-divider"></div>
+      <div>
+        <div class="antd-card-label">Our extensions</div>
+        <div class="antd-tokens">
+          <span class="antd-tok" style="color:var(--ink-3);background:var(--surface-2);border-color:var(--rule);">shadow.none</span>
+          <span class="antd-tok" style="color:var(--ink-3);background:var(--surface-2);border-color:var(--rule);">shadow.XL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 01 Visual Scale -->
+  <div class="section s2">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div class="section-title">Elevation Scale — Visual</div>
+      <div class="section-desc">5 levels · Hover to see depth · Cards float on background</div>
+      <div class="section-count">5 tokens</div>
+    </div>
+
+    <div class="elevation-grid">
+      <div class="elev-item">
+        <div class="elev-shape" style="box-shadow:none;border:1px solid var(--rule);"></div>
+        <div class="elev-label">
+          <span class="elev-token">shadow.none</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-3);">no shadow</span>
+          <span class="elev-antd none">— extended</span>
+        </div>
+      </div>
+      <div class="elev-item">
+        <div class="elev-shape" style="box-shadow:0 1px 2px rgba(0,0,0,.04),0 1px 6px -1px rgba(0,0,0,.03),0 2px 4px rgba(0,0,0,.03);"></div>
+        <div class="elev-label">
+          <span class="elev-token">shadow.SM</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-3);">subtle float</span>
+          <span class="elev-antd">boxShadowTertiary</span>
+        </div>
+      </div>
+      <div class="elev-item">
+        <div class="elev-shape" style="box-shadow:0 3px 6px -4px rgba(0,0,0,.12),0 6px 16px rgba(0,0,0,.08),0 9px 28px 8px rgba(0,0,0,.05);"></div>
+        <div class="elev-label">
+          <span class="elev-token hi">shadow.MD ★</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--accent);">default card</span>
+          <span class="elev-antd" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">boxShadow (seed)</span>
+        </div>
+      </div>
+      <div class="elev-item">
+        <div class="elev-shape" style="box-shadow:0 6px 16px -2px rgba(0,0,0,.15),0 12px 28px rgba(0,0,0,.10),0 16px 40px 6px rgba(0,0,0,.07);"></div>
+        <div class="elev-label">
+          <span class="elev-token">shadow.LG</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-3);">modal / overlay</span>
+          <span class="elev-antd">boxShadowSecondary</span>
+        </div>
+      </div>
+      <div class="elev-item">
+        <div class="elev-shape" style="box-shadow:0 12px 32px -4px rgba(0,0,0,.18),0 20px 48px rgba(0,0,0,.12),0 24px 64px 8px rgba(0,0,0,.08);"></div>
+        <div class="elev-label">
+          <span class="elev-token">shadow.XL</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--ink-3);">hero / feature</span>
+          <span class="elev-antd none">— extended</span>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Token Name</th>
+          <th style="width:46%;">CSS Value</th>
+          <th class="antd-th">AntD v5 Token</th>
+          <th>Used For</th>
+          <th>Layer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="t-name">shadow.none</span></td><td><span class="t-val">none</span></td><td><span class="t-antd none">— extended</span></td><td><span class="t-use">Flat tables, flush surfaces</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+        <tr><td><span class="t-name">shadow.SM</span></td><td><span class="t-val">0 1px 2px rgba(0,0,0,.04), 0 1px 6px -1px rgba(0,0,0,.03), 0 2px 4px rgba(0,0,0,.03)</span></td><td><span class="t-antd">boxShadowTertiary</span></td><td><span class="t-use">Tags, chips, subtle hover lift</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+        <tr class="base-row"><td><span class="t-name hi">shadow.MD ★</span></td><td><span class="t-val">0 3px 6px -4px rgba(0,0,0,.12), 0 6px 16px rgba(0,0,0,.08), 0 9px 28px 8px rgba(0,0,0,.05)</span></td><td><span class="t-antd" style="color:#531dab;background:#f9f0ff;border-color:#d3adf7;">boxShadow (seed)</span></td><td><span class="t-use">Default cards, dropdowns, menus</span></td><td><span class="lbadge l-seed">Seed</span></td></tr>
+        <tr><td><span class="t-name">shadow.LG</span></td><td><span class="t-val">0 6px 16px -2px rgba(0,0,0,.15), 0 12px 28px rgba(0,0,0,.10), 0 16px 40px 6px rgba(0,0,0,.07)</span></td><td><span class="t-antd">boxShadowSecondary</span></td><td><span class="t-use">Modals, dialogs, floating overlays</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+        <tr><td><span class="t-name">shadow.XL</span></td><td><span class="t-val">0 12px 32px -4px rgba(0,0,0,.18), 0 20px 48px rgba(0,0,0,.12), 0 24px 64px 8px rgba(0,0,0,.08)</span></td><td><span class="t-antd none">— extended</span></td><td><span class="t-use">Feature cards, hero sections</span></td><td><span class="lbadge l-map">Map</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 02 Demo -->
+  <div class="section s3">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div class="section-title">Component Usage</div>
+      <div class="section-desc">Elevation in context</div>
+    </div>
+    <div class="demo-grid">
+      <div class="demo-card">
+        <div class="demo-lbl">Dropdown / Menu</div>
+        <div class="demo-canvas" style="align-items:flex-start;">
+          <button style="background:#531dab;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:default;">Open Menu ▾</button>
+          <div style="background:#fff;border-radius:8px;padding:6px 0;box-shadow:0 3px 6px -4px rgba(0,0,0,.12),0 6px 16px rgba(0,0,0,.08),0 9px 28px 8px rgba(0,0,0,.05);min-width:160px;">
+            <div style="padding:8px 16px;font-size:13px;font-family:var(--sans);cursor:default;">Dashboard</div>
+            <div style="padding:8px 16px;font-size:13px;font-family:var(--sans);cursor:default;background:#f9f0ff;color:#531dab;">Analytics</div>
+            <div style="height:1px;background:var(--rule);margin:4px 0;"></div>
+            <div style="padding:8px 16px;font-size:13px;font-family:var(--sans);cursor:default;">Settings</div>
+          </div>
+        </div>
+        <div class="demo-tokens">
+          <div class="dtr"><span>Dropdown shadow</span><span>shadow.MD → boxShadow</span></div>
+          <div class="dtr"><span>Dropdown radius</span><span>radius.LG (8px) → borderRadiusLG</span></div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-lbl">Modal Dialog</div>
+        <div class="demo-canvas" style="align-items:center;">
+          <div style="background:#fff;border-radius:12px;padding:24px;box-shadow:0 6px 16px -2px rgba(0,0,0,.15),0 12px 28px rgba(0,0,0,.10),0 16px 40px 6px rgba(0,0,0,.07);max-width:280px;width:100%;">
+            <div style="font-size:16px;font-weight:600;font-family:var(--sans);margin-bottom:8px;">Confirm Action</div>
+            <div style="font-size:13px;color:var(--ink-2);font-family:var(--sans);margin-bottom:20px);">This cannot be undone. Are you sure you want to proceed?</div>
+            <div style="display:flex;gap:8px;margin-top:16px;">
+              <button style="flex:1;background:var(--surface-2);color:var(--ink);border:1px solid var(--rule);padding:7px 0;border-radius:6px;font-size:13px;font-weight:500;font-family:var(--sans);cursor:default;">Cancel</button>
+              <button style="flex:1;background:#ff4d4f;color:#fff;border:none;padding:7px 0;border-radius:6px;font-size:13px;font-weight:600;font-family:var(--sans);cursor:default;">Delete</button>
+            </div>
+          </div>
+        </div>
+        <div class="demo-tokens">
+          <div class="dtr"><span>Modal shadow</span><span>shadow.LG → boxShadowSecondary</span></div>
+          <div class="dtr"><span>Modal radius</span><span>radius.XL (12px) — extended</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="border-top:1px solid var(--rule);padding-top:28px;margin-top:80px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+    <span style="font-family:var(--mono);font-size:11px;color:var(--ink-3);">Shadow & Elevation Token System · v1.0.0 · 5 levels</span>
+    <span style="font-family:var(--mono);font-size:11px;color:#d46b08;background:#fff7e6;border:1px solid #ffd591;padding:3px 10px;border-radius:4px;">↔ AntD v5: boxShadow · boxShadowSecondary · boxShadowTertiary</span>
+  </footer>
+</div>
+</body>
+</html>

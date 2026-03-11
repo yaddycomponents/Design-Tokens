@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(vercel --prod --yes)",
+      "WebFetch(domain:www.untitledui.com)",
+      "Bash(vercel --prod)"
+    ]
+  }
+}

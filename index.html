@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — AntD v6 · Token Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:        #F9FAFB;
+  --surface:   #FFFFFF;
+  --surface-2: #F9FAFB;
+  --ink:       #101828;
+  --ink-2:     #344054;
+  --ink-3:     #667085;
+  --ink-4:     #98A2B3;
+  --rule:      #EAECF0;
+  --rule-2:    #D0D5DD;
+  --primary:   #7F56D9;
+  --primary-2: #6941C6;
+  --primary-bg:#F9F5FF;
+  --primary-lt:#E9D7FE;
+  --nav-w:     240px;
+  --topbar-h:  64px;
+  --sans:      'Inter', sans-serif;
+  --mono:      'IBM Plex Mono', monospace;
+}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;display:flex;flex-direction:column;}
+
+/* ═══════════════════════════════
+   Top bar
+   ═══════════════════════════════ */
+.topbar{
+  height:var(--topbar-h);
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  padding:0 24px;
+  gap:8px;
+  flex-shrink:0;
+  border-bottom:1px solid var(--rule);
+  z-index:200;
+}
+
+/* Logo */
+.topbar-logo{display:flex;align-items:center;gap:10px;margin-right:8px;text-decoration:none;}
+.logo-mark{
+  width:32px;height:32px;
+  background:var(--primary);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--sans);font-size:13px;font-weight:700;color:#fff;
+  letter-spacing:-.02em;flex-shrink:0;
+}
+.logo-name{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-.01em;}
+.logo-version{
+  font-family:var(--mono);font-size:10px;color:var(--ink-3);
+  background:var(--bg);border:1px solid var(--rule);
+  padding:2px 8px;border-radius:6px;margin-left:2px;
+}
+
+/* Divider */
+.topbar-divider{width:1px;height:24px;background:var(--rule);margin:0 8px;flex-shrink:0;}
+
+/* Tabs */
+.topbar-tabs{display:flex;gap:2px;flex:1;overflow:hidden;}
+.topbar-tab{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:13px;font-weight:500;
+  color:var(--ink-3);
+  letter-spacing:-.01em;
+  transition:all .15s;
+  border:none;background:transparent;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.topbar-tab:hover{background:var(--bg);color:var(--ink-2);}
+.topbar-tab.active{background:var(--primary-bg);color:var(--primary-2);font-weight:600;}
+.topbar-tab .tab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* Right badges */
+.topbar-right{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+.topbar-badge{
+  font-family:var(--mono);font-size:11px;
+  padding:3px 8px;border-radius:6px;font-weight:500;
+}
+.badge-v5{background:#EFF8FF;color:#175CD3;border:1px solid #B2DDFF;}
+.badge-v6{background:var(--primary-bg);color:var(--primary-2);border:1px solid var(--primary-lt);}
+.badge-inter{background:#ECFDF3;color:#027A48;border:1px solid #ABEFC6;}
+
+/* ═══════════════════════════════
+   Body layout
+   ═══════════════════════════════ */
+.body-row{display:flex;flex:1;overflow:hidden;}
+
+/* ═══════════════════════════════
+   Sidebar
+   ═══════════════════════════════ */
+.sidebar{
+  width:var(--nav-w);
+  flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--rule);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--rule) transparent;
+}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--rule-2);}
+
+.nav-section{padding:20px 0 8px;}
+.nav-section-label{
+  font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-4);
+  padding:0 16px;margin-bottom:4px;
+}
+.nav-link{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px;
+  cursor:pointer;text-decoration:none;
+  border-left:2px solid transparent;
+  transition:all .12s;
+  margin:1px 0;
+}
+.nav-link:hover{background:var(--bg);}
+.nav-link.active{
+  background:var(--primary-bg);
+  border-left-color:var(--primary);
+}
+.nav-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.nav-label{
+  font-size:13px;font-weight:500;
+  color:var(--ink-2);
+}
+.nav-link:hover .nav-label{color:var(--ink);}
+.nav-link.active .nav-label{color:var(--primary-2);font-weight:600;}
+.nav-count{
+  font-family:var(--mono);font-size:11px;
+  color:var(--ink-4);margin-left:auto;
+  background:var(--bg);border:1px solid var(--rule);
+  padding:1px 6px;border-radius:4px;
+}
+.nav-link.active .nav-count{
+  color:var(--primary-2);
+  background:var(--primary-bg);
+  border-color:var(--primary-lt);
+}
+
+.sidebar-foot{
+  margin-top:auto;
+  padding:16px;
+  border-top:1px solid var(--rule);
+}
+.sidebar-foot-label{
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-4);margin-bottom:8px;
+}
+.token-counts{display:flex;flex-wrap:wrap;gap:4px;}
+.tc{
+  font-family:var(--mono);font-size:10px;
+  padding:3px 8px;border-radius:6px;
+  border:1px solid var(--rule);
+  color:var(--ink-3);background:var(--bg);
+}
+
+/* ═══════════════════════════════
+   Frame area
+   ═══════════════════════════════ */
+.frame-area{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.frame-topbar{
+  height:40px;
+  background:var(--surface);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;
+  padding:0 20px;gap:10px;flex-shrink:0;
+}
+.frame-path{font-size:13px;color:var(--ink-3);}
+.frame-path span{color:var(--primary-2);font-weight:500;}
+.frame-actions{display:flex;gap:6px;margin-left:auto;}
+.frame-btn{
+  font-size:12px;font-weight:500;
+  padding:5px 12px;border-radius:6px;
+  border:1px solid var(--rule);
+  background:var(--surface);color:var(--ink-2);
+  cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:5px;
+  transition:all .12s;
+}
+.frame-btn:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+  background:var(--primary-bg);
+}
+iframe{flex:1;border:none;width:100%;height:100%;}
+
+/* ═══════════════════════════════
+   Home screen
+   ═══════════════════════════════ */
+.home-screen{flex:1;overflow-y:auto;padding:48px 56px;background:var(--bg);}
+
+.home-hero{max-width:720px;margin-bottom:48px;}
+.home-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--primary-2);
+  background:var(--primary-bg);border:1px solid var(--primary-lt);
+  padding:4px 12px;border-radius:999px;
+  margin-bottom:16px;
+}
+.home-title{
+  font-size:40px;font-weight:700;
+  letter-spacing:-.03em;
+  color:var(--ink);line-height:1.15;
+  margin-bottom:14px;
+}
+.home-title em{color:var(--primary);font-style:normal;}
+.home-sub{
+  font-size:16px;color:var(--ink-3);
+  line-height:1.7;max-width:560px;
+}
+
+/* Stats row */
+.home-stats{
+  display:flex;gap:0;
+  border:1px solid var(--rule);
+  border-radius:12px;
+  overflow:hidden;
+  width:fit-content;
+  margin:28px 0;
+  background:var(--surface);
+  box-shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
+}
+.hstat{
+  padding:14px 24px;
+  border-right:1px solid var(--rule);
+}
+.hstat:last-child{border-right:none;}
+.hstat-val{
+  font-size:20px;font-weight:700;
+  color:var(--ink);letter-spacing:-.02em;
+}
+.hstat-lbl{
+  font-size:11px;font-weight:500;
+  color:var(--ink-4);
+  letter-spacing:.04em;text-transform:uppercase;
+  margin-top:2px;
+}
+
+/* Cards grid */
+.home-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:16px;max-width:1000px;
+}
+.home-card{
+  background:var(--surface);
+  border:1px solid var(--rule);
+  border-radius:12px;
+  overflow:hidden;cursor:pointer;
+  text-decoration:none;display:block;
+  transition:all .2s;
+  box-shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
+}
+.home-card:hover{
+  border-color:var(--primary);
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(127,86,217,.12),0 1px 3px rgba(16,24,40,.06);
+}
+.home-card:hover .hc-arrow{color:var(--primary);}
+
+.hc-top{padding:20px 20px 16px;}
+.hc-icon{
+  width:40px;height:40px;border-radius:8px;
+  border:1px solid var(--rule);
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;margin-bottom:12px;
+  box-shadow:0 1px 2px rgba(16,24,40,.05);
+}
+.hc-title{
+  font-size:14px;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);
+  margin-bottom:4px;
+}
+.hc-desc{font-size:13px;color:var(--ink-3);line-height:1.55;}
+
+.hc-bottom{
+  padding:12px 20px;
+  display:flex;align-items:center;gap:6px;
+  background:var(--bg);
+  border-top:1px solid var(--rule);
+}
+.hc-tags{display:flex;gap:5px;flex:1;flex-wrap:wrap;}
+.hc-tag{
+  font-family:var(--mono);font-size:10px;
+  padding:2px 8px;border-radius:999px;
+  font-weight:500;
+}
+.hc-arrow{color:var(--ink-4);font-size:14px;margin-left:auto;transition:color .15s;}
+
+/* Tag colors — Untitled UI palette */
+.tag-purple{background:var(--primary-bg);color:var(--primary-2);border:1px solid var(--primary-lt);}
+.tag-blue{background:#EFF8FF;color:#175CD3;border:1px solid #B2DDFF;}
+.tag-green{background:#ECFDF3;color:#027A48;border:1px solid #ABEFC6;}
+.tag-orange{background:#FFFAEB;color:#B54708;border:1px solid #FEDF89;}
+.tag-gray{background:var(--bg);color:var(--ink-3);border:1px solid var(--rule);}
+</style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="topbar">
+  <a class="topbar-logo" href="#" onclick="showHome(event)">
+    <div class="logo-mark">DS</div>
+    <div class="logo-name">Design System</div>
+    <span class="logo-version">v1.0.0</span>
+  </a>
+  <div class="topbar-divider"></div>
+  <div class="topbar-tabs">
+    <a class="topbar-tab active" href="#" onclick="showHome(event)">
+      <div class="tab-dot" style="background:#7F56D9;"></div>Home
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/token-reference.html','Token Reference','All Tokens')">
+      <div class="tab-dot" style="background:#6941C6;"></div>Token Reference
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/design-system.html','Design System','Complete')">
+      <div class="tab-dot" style="background:#1570EF;"></div>Design System
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/antd-config.html','AntD Config','v5 & v6')">
+      <div class="tab-dot" style="background:#DC6803;"></div>AntD Config
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/typography.html','Typography','Tokens')">
+      <div class="tab-dot" style="background:#099250;"></div>Typography
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/spacing.html','Spacing','Tokens')">
+      <div class="tab-dot" style="background:#E04F16;"></div>Spacing
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/radius.html','Border Radius','Tokens')">
+      <div class="tab-dot" style="background:#0E7090;"></div>Radius
+    </a>
+    <a class="topbar-tab" href="#" onclick="loadPage(event,'pages/shadow.html','Shadow','Tokens')">
+      <div class="tab-dot" style="background:#344054;"></div>Shadow
+    </a>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge badge-inter">Inter</span>
+    <span class="topbar-badge badge-v5">AntD v5</span>
+    <span class="topbar-badge badge-v6">AntD v6</span>
+  </div>
+</div>
+
+<!-- ── Body ── -->
+<div class="body-row">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-label">Foundations</div>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/token-reference.html','Token Reference','All Tokens')">
+        <div class="nav-dot" style="background:#6941C6;"></div>
+        <span class="nav-label">Color</span><span class="nav-count">106</span>
+      </a>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/spacing.html','Spacing','Tokens')">
+        <div class="nav-dot" style="background:#E04F16;"></div>
+        <span class="nav-label">Spacing</span><span class="nav-count">18</span>
+      </a>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/typography.html','Typography','Tokens')">
+        <div class="nav-dot" style="background:#099250;"></div>
+        <span class="nav-label">Typography</span><span class="nav-count">17</span>
+      </a>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/radius.html','Border Radius','Tokens')">
+        <div class="nav-dot" style="background:#0E7090;"></div>
+        <span class="nav-label">Border Radius</span><span class="nav-count">5</span>
+      </a>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/shadow.html','Shadow','Tokens')">
+        <div class="nav-dot" style="background:#344054;"></div>
+        <span class="nav-label">Shadow</span><span class="nav-count">5</span>
+      </a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Reference</div>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/token-reference.html','Token Reference','All Tokens')">
+        <div class="nav-dot" style="background:#7F56D9;"></div>
+        <span class="nav-label">All Tokens</span><span class="nav-count">162</span>
+      </a>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/design-system.html','Design System','Complete')">
+        <div class="nav-dot" style="background:#1570EF;"></div>
+        <span class="nav-label">Design System</span>
+      </a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Config</div>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/antd-config.html','AntD Config','v5 & v6')">
+        <div class="nav-dot" style="background:#DC6803;"></div>
+        <span class="nav-label">AntD v5 Config</span>
+      </a>
+      <a class="nav-link" href="#" onclick="loadPage(event,'pages/antd-config.html','AntD Config','v5 & v6')">
+        <div class="nav-dot" style="background:#6941C6;"></div>
+        <span class="nav-label">AntD v6 Config</span>
+      </a>
+    </div>
+    <div class="sidebar-foot">
+      <div class="sidebar-foot-label">Token counts</div>
+      <div class="token-counts">
+        <span class="tc">Color · 106</span>
+        <span class="tc">Space · 18</span>
+        <span class="tc">Type · 17</span>
+        <span class="tc">Radius · 5</span>
+        <span class="tc">Shadow · 5</span>
+        <span class="tc">AI · 4</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Frame area -->
+  <div class="frame-area" id="frameArea">
+
+    <!-- Breadcrumb bar (hidden on home) -->
+    <div class="frame-topbar" id="frameCrumb" style="display:none;">
+      <span class="frame-path">Design System / <span id="crumbSection">—</span> / <span id="crumbPage">—</span></span>
+      <div class="frame-actions">
+        <a class="frame-btn" id="openExternal" href="#" target="_blank">↗ Open in new tab</a>
+        <button class="frame-btn" onclick="showHome()">← Home</button>
+      </div>
+    </div>
+
+    <!-- Home screen -->
+    <div class="home-screen" id="homeScreen">
+      <div class="home-hero">
+        <div class="home-eyebrow">Design System · AntD v5 & v6 · 4px Grid</div>
+        <div class="home-title">All <em>Design Tokens</em><br>in one place</div>
+        <div class="home-sub">Complete token reference, design system documentation, and AntD theme configuration files for both v5 and v6 — with Inter font, purple primary, and AI gradient tokens.</div>
+        <div class="home-stats">
+          <div class="hstat"><div class="hstat-val">162</div><div class="hstat-lbl">Total Tokens</div></div>
+          <div class="hstat"><div class="hstat-val">7</div><div class="hstat-lbl">Categories</div></div>
+          <div class="hstat"><div class="hstat-val">28</div><div class="hstat-lbl">Components</div></div>
+          <div class="hstat"><div class="hstat-val">4px</div><div class="hstat-lbl">Grid</div></div>
+          <div class="hstat"><div class="hstat-val">#7F56D9</div><div class="hstat-lbl">Primary</div></div>
+        </div>
+      </div>
+
+      <div class="home-grid">
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/token-reference.html','Token Reference','All Tokens')">
+          <div class="hc-top">
+            <div class="hc-icon">🎨</div>
+            <div class="hc-title">Token Reference</div>
+            <div class="hc-desc">All 162 tokens in one table — CSS variable, token name, value, AntD ref, and live preview.</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-purple">Color · 106</span>
+              <span class="hc-tag tag-orange">AI · 4</span>
+              <span class="hc-tag tag-gray">162 total</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/design-system.html','Design System','Complete')">
+          <div class="hc-top">
+            <div class="hc-icon">📐</div>
+            <div class="hc-title">Design System</div>
+            <div class="hc-desc">Full design system documentation with color scales, spacing, typography, and component previews.</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-blue">Complete</span>
+              <span class="hc-tag tag-gray">6 chapters</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/antd-config.html','AntD Config','v5 & v6')">
+          <div class="hc-top">
+            <div class="hc-icon">⚙️</div>
+            <div class="hc-title">AntD Theme Config</div>
+            <div class="hc-desc">Copy-ready theme config files for AntD v5 and v6 — seed tokens, component overrides, CSS vars, AI tokens.</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-blue">AntD v5</span>
+              <span class="hc-tag tag-purple">AntD v6</span>
+              <span class="hc-tag tag-gray">TypeScript</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/typography.html','Typography','Tokens')">
+          <div class="hc-top">
+            <div class="hc-icon">✍️</div>
+            <div class="hc-title">Typography</div>
+            <div class="hc-desc">Font families (Inter, IBM Plex Mono), size scale 10–48px, weights, and line heights.</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-green">17 tokens</span>
+              <span class="hc-tag tag-gray">Inter</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/spacing.html','Spacing','Tokens')">
+          <div class="hc-top">
+            <div class="hc-icon">📏</div>
+            <div class="hc-title">Spacing</div>
+            <div class="hc-desc">4px grid spacing scale from XXS (4px) to 4XL (64px) — padding and gap variants.</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-orange">18 tokens</span>
+              <span class="hc-tag tag-gray">4px grid</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/radius.html','Border Radius','Tokens')">
+          <div class="hc-top">
+            <div class="hc-icon">⬜</div>
+            <div class="hc-title">Border Radius</div>
+            <div class="hc-desc">5-step radius scale: 2px, 4px, 6px, 8px, and pill (9999px).</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-purple">5 tokens</span>
+              <span class="hc-tag tag-gray">2px → pill</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+        <a class="home-card" href="#" onclick="loadPage(event,'pages/shadow.html','Shadow','Tokens')">
+          <div class="hc-top">
+            <div class="hc-icon">🌑</div>
+            <div class="hc-title">Shadow</div>
+            <div class="hc-desc">5 elevation levels — none, SM, MD (default), LG, XL — mapped to AntD boxShadow tokens.</div>
+          </div>
+          <div class="hc-bottom">
+            <div class="hc-tags">
+              <span class="hc-tag tag-gray">5 tokens</span>
+              <span class="hc-tag tag-gray">Elevation</span>
+            </div>
+            <span class="hc-arrow">→</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- iframe (hidden on home) -->
+    <iframe id="contentFrame" src="" style="display:none;" title="Content"></iframe>
+
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.topbar-tab');
+const navLinks = document.querySelectorAll('.nav-link');
+const frame = document.getElementById('contentFrame');
+const homeScreen = document.getElementById('homeScreen');
+const crumb = document.getElementById('frameCrumb');
+const crumbSection = document.getElementById('crumbSection');
+const crumbPage = document.getElementById('crumbPage');
+const openExternal = document.getElementById('openExternal');
+
+function setActiveTab(href) {
+  tabs.forEach(t => t.classList.remove('active'));
+  navLinks.forEach(l => l.classList.remove('active'));
+  tabs.forEach(t => {
+    const fn = t.getAttribute('onclick') || '';
+    if (fn.includes(href)) t.classList.add('active');
+  });
+  navLinks.forEach(l => {
+    const fn = l.getAttribute('onclick') || '';
+    if (fn.includes(href)) l.classList.add('active');
+  });
+}
+
+function loadPage(e, href, section, page) {
+  if (e) e.preventDefault();
+  homeScreen.style.display = 'none';
+  frame.style.display = 'block';
+  crumb.style.display = 'flex';
+  frame.src = href;
+  crumbSection.textContent = section;
+  crumbPage.textContent = page;
+  openExternal.href = href;
+  setActiveTab(href);
+  tabs[0].classList.remove('active');
+}
+
+function showHome(e) {
+  if (e) e.preventDefault();
+  homeScreen.style.display = 'block';
+  frame.style.display = 'none';
+  crumb.style.display = 'none';
+  frame.src = '';
+  tabs.forEach(t => t.classList.remove('active'));
+  navLinks.forEach(l => l.classList.remove('active'));
+  tabs[0].classList.add('active');
+}
+</script>
+<!-- ── Team Comments ── -->
+<script>
+  window.DS_SUPABASE_URL = 'https://ihmidbjpqnhdrfaqmwig.supabase.co';
+  window.DS_SUPABASE_KEY = 'sb_publishable_-E3zvNuP4-j-Dh8tzJlUAA_zzwq7T0w';
+</script>
+<script src="comments.js"></script>
+</body>
+</html>
