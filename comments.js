@@ -25,6 +25,8 @@
   let selectedPinId = null;
   let dragStart = null;       // { clientX, clientY } for area selection
   let selectionEl = null;     // temp selection rect DOM element
+  let threadView  = null;   // comment id when drill-down thread is open
+  let replies     = {};     // { [commentId]: Reply[] }
 
   /* ══════════════════════════════════════════════════════════════
      CSS
@@ -453,6 +455,117 @@ textarea.cs-form-field {
   box-shadow: 0 1px 2px rgba(16,24,40,.05);
 }
 #cs-form-submit:hover { background: #6941C6; box-shadow: 0 4px 8px rgba(127,86,217,.3); }
+
+/* ── Thread / Reply styles ── */
+#cs-back-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background .12s, color .12s;
+}
+#cs-back-btn:hover { background: #F2F4F7; color: #344054; }
+.cs-thread-original {
+  padding: 16px;
+  border-bottom: 1px solid #EAECF0;
+}
+.cs-replies-section {
+  padding: 0;
+}
+.cs-replies-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #98A2B3;
+  padding: 10px 16px 6px;
+}
+.cs-reply-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F2F4F7;
+}
+.cs-reply-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.cs-reply-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #344054;
+}
+.cs-reply-time {
+  font-size: 11px;
+  color: #98A2B3;
+  margin-left: auto;
+}
+.cs-reply-text {
+  font-size: 13px;
+  color: #667085;
+  line-height: 1.5;
+  word-break: break-word;
+}
+.cs-reply-del {
+  background: transparent;
+  border: none;
+  color: #98A2B3;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: color .12s;
+}
+.cs-reply-del:hover { color: #B42318; }
+#cs-reply-composer {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-top: 1px solid #EAECF0;
+  background: #FFFFFF;
+}
+#cs-reply-textarea {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid #D0D5DD;
+  border-radius: 8px;
+  color: #101828;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .12s, box-shadow .12s;
+  display: block;
+  min-height: 60px;
+  resize: vertical;
+}
+#cs-reply-textarea::placeholder { color: #98A2B3; }
+#cs-reply-textarea:focus { border-color: #7F56D9; box-shadow: 0 0 0 3px rgba(127,86,217,.12); }
+.cs-reply-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+#cs-reply-btn {
+  background: #7F56D9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s, box-shadow .12s;
+  box-shadow: 0 1px 2px rgba(16,24,40,.05);
+}
+#cs-reply-btn:hover { background: #6941C6; box-shadow: 0 4px 8px rgba(127,86,217,.3); }
+#cs-head-thread { display: none; }
 `;
 
   /* ══════════════════════════════════════════════════════════════
@@ -483,11 +596,18 @@ textarea.cs-form-field {
     panel.innerHTML = `
       <div id="cs-panel-head">
         <div class="cs-panel-pagename" id="cs-pagename"></div>
-        <div class="cs-panel-title-row">
+        <div id="cs-head-list" class="cs-panel-title-row">
           <span class="cs-panel-title">Team Comments</span>
           <div class="cs-head-actions">
             <button id="cs-add-btn">+ Add</button>
             <button id="cs-close-btn" title="Close">✕</button>
+          </div>
+        </div>
+        <div id="cs-head-thread" class="cs-panel-title-row" style="display:none">
+          <button id="cs-back-btn" title="Back">← Back</button>
+          <span class="cs-panel-title" id="cs-thread-num">Thread</span>
+          <div class="cs-head-actions">
+            <button id="cs-close-btn-t" title="Close">✕</button>
           </div>
         </div>
       </div>
@@ -526,6 +646,8 @@ textarea.cs-form-field {
     fab.addEventListener('click', togglePanel);
     document.getElementById('cs-close-btn').addEventListener('click', closePanel);
     document.getElementById('cs-add-btn').addEventListener('click', toggleAddMode);
+    document.getElementById('cs-back-btn').addEventListener('click', closeThread);
+    document.getElementById('cs-close-btn-t').addEventListener('click', closePanel);
     overlay.addEventListener('mousedown', onOverlayMousedown);
     overlay.addEventListener('mousemove', onOverlayMousemove);
     // Listen on document so a release outside the overlay is always caught
@@ -878,6 +1000,177 @@ textarea.cs-form-field {
     }
   }
 
+  function reopenComment(id) {
+    const c = comments.find(x => x.id === id);
+    if (!c || !c.resolved) return;
+    c.resolved = false;
+    renderList(); renderPins();
+    if (hasBackend()) {
+      fetch(SB_URL() + '/rest/v1/comments?id=eq.' + encodeURIComponent(id), {
+        method: 'PATCH',
+        headers: { 'apikey': SB_KEY(), 'Authorization': 'Bearer ' + SB_KEY(), 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ resolved: false }),
+      }).catch(() => {});
+    }
+  }
+
+  function scrollToComment(c) {
+    const frame = document.getElementById('contentFrame');
+    if (!frame || !frame.contentWindow) return;
+    const overlay = document.getElementById('cs-overlay');
+    const overlayRect = overlay.getBoundingClientRect();
+    const docHeight = (frame.contentDocument)
+      ? frame.contentDocument.documentElement.scrollHeight
+      : overlayRect.height;
+    const docYpx = (c.y / 100) * docHeight;
+    const targetScroll = docYpx - overlayRect.height / 2;
+    frame.contentWindow.scrollTo({ top: Math.max(0, targetScroll), behavior: 'smooth' });
+  }
+
+  function openThread(id) {
+    if (!panelOpen) openPanel();
+    threadView = id;
+    selectedPinId = id;
+    renderPins();
+    // Scroll iframe to show the pin
+    const c = comments.find(x => x.id === id);
+    if (c) scrollToComment(c);
+    // Switch header
+    document.getElementById('cs-head-list').style.display = 'none';
+    document.getElementById('cs-head-thread').style.display = 'flex';
+    // Find thread number
+    const active = comments.filter(c => !c.resolved);
+    const idx = active.findIndex(c => c.id === id);
+    const num = idx >= 0 ? idx + 1 : comments.findIndex(c => c.id === id) + 1;
+    document.getElementById('cs-thread-num').textContent = 'Thread #' + num;
+    renderThread();
+    fetchReplies(id);
+  }
+
+  function closeThread() {
+    threadView = null;
+    document.getElementById('cs-head-list').style.display = 'flex';
+    document.getElementById('cs-head-thread').style.display = 'none';
+    renderList();
+  }
+
+  function renderThread() {
+    const body = document.getElementById('cs-panel-body');
+    if (!body || !threadView) return;
+    const c = comments.find(x => x.id === threadView);
+    if (!c) { closeThread(); return; }
+
+    const reps = replies[threadView] || [];
+
+    const resolveLabel = c.resolved ? '↺ Reopen' : '✓ Resolve';
+    const resolveClass = c.resolved ? 'cs-resolve-btn' : 'cs-resolve-btn';
+
+    let repsHtml = `<div class="cs-replies-label">Replies (${reps.length})</div>`;
+    reps.forEach(r => {
+      repsHtml += `<div class="cs-reply-item">
+        <div class="cs-reply-meta">
+          <span class="cs-reply-author">${esc(r.author)}</span>
+          <span class="cs-reply-time">${timeAgo(r.timestamp)}</span>
+        </div>
+        <div class="cs-reply-text">${esc(r.comment)}</div>
+        <button class="cs-reply-del" data-rid="${esc(r.id)}">✕ Delete</button>
+      </div>`;
+    });
+
+    body.innerHTML = `
+      <div class="cs-thread-original">
+        <div class="cs-item-meta" style="margin-bottom:6px">
+          <span class="cs-item-author">${esc(c.author)}</span>
+          <span class="cs-item-time">${timeAgo(c.timestamp)}</span>
+        </div>
+        <div class="cs-thread-text">${esc(c.comment)}</div>
+        <div class="cs-item-actions" style="margin-top:8px">
+          <button class="${resolveClass}" data-id="${esc(c.id)}">${resolveLabel}</button>
+          <button class="cs-delete-btn" data-id="${esc(c.id)}">✕ Delete</button>
+        </div>
+      </div>
+      <div class="cs-replies-section">${repsHtml}</div>
+      <div id="cs-reply-composer">
+        <textarea id="cs-reply-textarea" class="cs-form-field" placeholder="Reply…" style="min-height:60px;resize:vertical;margin-bottom:0"></textarea>
+        <div class="cs-reply-row">
+          <button id="cs-reply-btn">Reply</button>
+        </div>
+      </div>`;
+
+    // Wire buttons
+    body.querySelector('.cs-resolve-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      c.resolved ? reopenComment(c.id) : resolveComment(c.id);
+      if (threadView) renderThread();
+    });
+    body.querySelector('.cs-delete-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      deleteComment(c.id);
+      closeThread();
+    });
+    body.querySelectorAll('.cs-reply-del').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        deleteReply(btn.dataset.rid, threadView);
+      });
+    });
+    document.getElementById('cs-reply-btn').addEventListener('click', () => submitReply(threadView));
+    document.getElementById('cs-reply-textarea').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submitReply(threadView);
+    });
+  }
+
+  function fetchReplies(commentId) {
+    if (!hasBackend()) return;
+    fetch(SB_URL() + '/rest/v1/replies?comment_id=eq.' + encodeURIComponent(commentId) + '&order=timestamp.asc', {
+      headers: { 'apikey': SB_KEY(), 'Authorization': 'Bearer ' + SB_KEY() },
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          replies[commentId] = data;
+          if (threadView === commentId) renderThread();
+        }
+      })
+      .catch(() => {});
+  }
+
+  function submitReply(commentId) {
+    const ta = document.getElementById('cs-reply-textarea');
+    if (!ta) return;
+    const text = ta.value.trim();
+    if (!text) { ta.focus(); ta.style.borderColor = '#f5222d'; return; }
+    ta.style.borderColor = '';
+
+    const author = localStorage.getItem(LS_AUTHOR_KEY) || 'Anonymous';
+    const rid = 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const reply = { id: rid, comment_id: commentId, author, comment: text, timestamp: new Date().toISOString() };
+
+    if (!replies[commentId]) replies[commentId] = [];
+    replies[commentId].push(reply);
+    ta.value = '';
+    renderThread();
+
+    if (hasBackend()) {
+      fetch(SB_URL() + '/rest/v1/replies', {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY(), 'Authorization': 'Bearer ' + SB_KEY(), 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(reply),
+      }).catch(() => {});
+    }
+  }
+
+  function deleteReply(rid, commentId) {
+    if (replies[commentId]) replies[commentId] = replies[commentId].filter(r => r.id !== rid);
+    renderThread();
+    if (hasBackend()) {
+      fetch(SB_URL() + '/rest/v1/replies?id=eq.' + encodeURIComponent(rid), {
+        method: 'DELETE',
+        headers: { 'apikey': SB_KEY(), 'Authorization': 'Bearer ' + SB_KEY(), 'Prefer': 'return=minimal' },
+      }).catch(() => {});
+    }
+  }
+
   /* ══════════════════════════════════════════════════════════════
      API: fetch comments
      ══════════════════════════════════════════════════════════════ */
@@ -929,6 +1222,13 @@ textarea.cs-form-field {
     const body = document.getElementById('cs-panel-body');
     const foot = document.getElementById('cs-panel-foot');
     if (!body) return;
+
+    // Ensure list header is shown
+    const hList = document.getElementById('cs-head-list');
+    const hThread = document.getElementById('cs-head-thread');
+    if (hList) hList.style.display = 'flex';
+    if (hThread) hThread.style.display = 'none';
+    threadView = null;
 
     const active   = comments.filter(c => !c.resolved);
     const resolved = comments.filter(c => c.resolved);
@@ -1120,16 +1420,7 @@ textarea.cs-form-field {
   }
 
   function selectPin(id) {
-    selectedPinId = id;
-    renderPins();
-    // Scroll to item and highlight
-    const body = document.getElementById('cs-panel-body');
-    if (!body) return;
-    body.querySelectorAll('.cs-item').forEach(item => {
-      item.classList.toggle('cs-selected', item.dataset.id === id);
-    });
-    const sel = body.querySelector(`.cs-item[data-id="${id}"]`);
-    if (sel) sel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    openThread(id);
   }
 
   /* ══════════════════════════════════════════════════════════════
@@ -1151,6 +1442,15 @@ textarea.cs-form-field {
      Keyboard
      ══════════════════════════════════════════════════════════════ */
   function onKeyDown(e) {
+    // C = toggle comment mode (when not typing in an input/textarea)
+    if (e.key === 'c' || e.key === 'C') {
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
+        if (!panelOpen) openPanel();
+        toggleAddMode();
+        return;
+      }
+    }
     if (e.key === 'Escape') {
       if (formEl && formEl.style.display !== 'none') {
         cancelForm();
